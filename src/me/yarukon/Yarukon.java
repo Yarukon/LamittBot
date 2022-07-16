@@ -1,10 +1,7 @@
 package me.yarukon;
 
 import me.yarukon.utils.TimeHelper;
-import net.mamoe.mirai.Bot;
-
 import java.net.URI;
-import java.util.Objects;
 
 public class Yarukon {
     public static Yarukon INSTANCE;

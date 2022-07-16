@@ -21,9 +21,6 @@ public class Values {
     public BooleanValue minecraftStatQuery = new BooleanValue("MinecraftStatQuery", false, valuesList);
     public MultiMapValue minecraftServerIP = new MultiMapValue("MinecraftServerIP", valuesList);
 
-    //造油
-    public BooleanValue makeOil = new BooleanValue("MakeOil", false, valuesList);
-
     //青年大学习答案解析
     public BooleanValue daXueXi = new BooleanValue("DaXueXi", false, valuesList);
 

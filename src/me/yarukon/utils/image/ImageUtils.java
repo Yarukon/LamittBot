@@ -1,5 +1,11 @@
 package me.yarukon.utils.image;
 
+import com.google.gson.JsonObject;
+import me.yarukon.BotMain;
+import me.yarukon.utils.GenshinQueryUtil;
+import net.mamoe.mirai.utils.MiraiLogger;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -9,16 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.imageio.ImageIO;
-
-import com.google.gson.JsonObject;
-import me.yarukon.BotMain;
-import me.yarukon.utils.GenshinQueryUtil;
-import me.yarukon.utils.image.Element;
-import me.yarukon.utils.image.impl.TextElement;
-import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.utils.MiraiLogger;
+import java.util.Objects;
 
 public class ImageUtils {
 	public static Font font0;
@@ -42,8 +39,10 @@ public class ImageUtils {
 		font4 = getFont("Sarasa", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
 	}
 
-	public void generateStatImage(long id, JsonObject obj) throws Exception {
-		createImage(820, 0, true, GenshinQueryUtil.INSTANCE.statusAnalysis(id, obj), Paths.get(BotMain.INSTANCE.genshin_outputPath.getAbsolutePath(), id + ".png").toFile());
+	public ByteArrayOutputStream generateStatImage(long id, JsonObject obj) throws Exception {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ImageUtils.createImage(820, 0, true, GenshinQueryUtil.INSTANCE.statusAnalysis(id, obj), out);
+		return out;
 	}
 
 	public static Font getFont(String fontName, int size, String path) {
@@ -67,43 +66,15 @@ public class ImageUtils {
 			height += 5;
 
 			int lastY = 0;
-			int lastSpace = 0;
 			for(Element ele : elements) {
-				if(ele.y != lastY) {
-					height += ((ele.y - ele.height - ele.space) - lastY) + ele.height + ele.space;
-					lastY = ele.y;
-					lastSpace = ele.space;
+				if(ele.y >= lastY) {
+					height += (ele.y - lastY) + ele.space;
+					lastY = ele.y + ele.space;
 				}
 			}
-
-			height += lastSpace;
 		}
 
 		return new int[] {w, height};
-	}
-
-	public static void createImage(int w, int h, boolean autoCalcHeight, ArrayList<Element> elements, File outFile) throws Exception {
-		int[] arr = getWidthAndHeight(elements, w, h, autoCalcHeight);
-		int width = arr[0];
-		int height = arr[1];
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-		Graphics2D g = image.createGraphics();
-
-		g.setColor(new Color(47, 49, 54));
-		g.fillRect(0, 0, width, height);
-
-		//抗锯齿
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-		for(Element ele : elements) {
-			ele.doDraw(g);
-		}
-
-		g.dispose();
-		ImageIO.write(image, "png", outFile);
 	}
 
 	public static void createImage(int w, int h, boolean autoCalcHeight, ArrayList<Element> elements, ByteArrayOutputStream out) throws Exception {
@@ -135,8 +106,8 @@ public class ImageUtils {
 	}
 
 	public void cacheImage(String path, String type, MiraiLogger logger, boolean makeRoundCorner) {
-		File targetPath = new File(BotMain.INSTANCE.extResources.getAbsolutePath() + File.separator + path);
-		for(File p : targetPath.listFiles()) {
+		File targetPath = new File(BotMain.INSTANCE.genshinExtRes.getAbsolutePath() + File.separator + path);
+		for(File p : Objects.requireNonNull(targetPath.listFiles())) {
 			try {
 				BufferedImage img = ImageIO.read(p);
 
@@ -162,7 +133,7 @@ public class ImageUtils {
 
 	public static void doDownload(String imgName, String targetFolder, String url) {
 		BotMain.INSTANCE.getLogger().warning("检测到不存在的图像文件, 开始下载 " + imgName);
-		File targetPath = new File(BotMain.INSTANCE.extResources.getAbsolutePath() + File.separator + targetFolder + File.separator + imgName);
+		File targetPath = new File(BotMain.INSTANCE.genshinExtRes.getAbsolutePath() + File.separator + targetFolder + File.separator + imgName);
 
 		if(targetPath.exists()) {
 			BotMain.INSTANCE.getLogger().info("文件 " + imgName + " 已存在! 跳过下载...");

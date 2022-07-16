@@ -29,15 +29,14 @@ public class BotMain extends JavaPlugin {
 
     public String filePath = "";
     public File extResources;
+    public File genshinExtRes;
+
     public File cachePath;
     public HashMap<Long, Values> values = new HashMap<>();
     public CopyOnWriteArrayList<Long> groupIDs = new CopyOnWriteArrayList<>();
     public static BotMain INSTANCE;
 
     public ImageUtils imgUtil = new ImageUtils();
-
-    // 缓存路径存储区域
-    public File genshin_outputPath;
 
     // 狩猎地图缓存
     public BufferedImage redFlagImage;
@@ -63,10 +62,7 @@ public class BotMain extends JavaPlugin {
 
     public final String[] dataCenterFriendlyName = new String[] {"狗", "猪", "猫", "鸟"};
     public final String[] dataCenterName = new String[] {"豆豆柴", "莫古力", "猫小胖", "陆行鸟"};
-    public final String[] dogZoneName = new String[] {"水晶塔", "银泪湖", "太阳海岸", "伊修加德"};
-    public final String[] pigZoneName = new String[] {"拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿"};
-    public final String[] catZoneName = new String[] {"延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园"};
-    public final String[] birdZoneName = new String[] {"宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"};
+    public final String[] allZoneName = new String[] {"水晶塔", "银泪湖", "太阳海岸", "伊修加德", "拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿", "延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园", "宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"};
 
     @Override
     public void onEnable() {
@@ -75,11 +71,13 @@ public class BotMain extends JavaPlugin {
 
         values.clear();
         this.getLogger().info("[Yarukon] Venti Bot 正在启动...");
+
         filePath = this.getConfigFolder().getAbsolutePath();
         extResources = new File(filePath + File.separator + "VentiBot" + File.separator + "resource");
+        genshinExtRes = new File(extResources.getAbsolutePath() + File.separator + "GenshinRes");
         cachePath = new File(filePath + File.separator + "VentiBot" + File.separator + "cache");
 
-        //创建资源目录 (一般也用不到LOL)
+        //创建资源目录
         if(!extResources.exists())
             extResources.mkdir();
 
@@ -92,7 +90,8 @@ public class BotMain extends JavaPlugin {
         this.getLogger().info("[Yarukon] 缓存文件路径为 " + cachePath.getAbsolutePath());
 
         // 地图文件夹
-        this.huntMapPath = new File(extResources.getAbsolutePath() + File.separator + "huntMap");
+        this.huntMapPath = new File(extResources.getAbsolutePath() + File.separator + "HuntMap");
+
         try {
             redFlagImage = ImageIO.read(new File(this.huntMapPath + File.separator + ".." + File.separator + "redflag.png"));
         } catch (IOException e) {
@@ -169,30 +168,14 @@ public class BotMain extends JavaPlugin {
     }
 
     public boolean isZoneExist(String in) {
-        for(String s : this.dogZoneName) {
-            if (s.equals(in)) return true;
-        }
-
-        for(String s : this.pigZoneName) {
-            if (s.equals(in)) return true;
-        }
-
-        for(String s : this.birdZoneName) {
-            if (s.equals(in)) return true;
-        }
-
-        for(String s : this.catZoneName) {
+        for(String s : this.allZoneName) {
             if (s.equals(in)) return true;
         }
 
         return false;
     }
 
-    public void createCacheFolder() {
-        genshin_outputPath = new File(cachePath.getAbsolutePath() + File.separator + "genshinTemp");
-        if(!genshin_outputPath.exists())
-            genshin_outputPath.mkdir();
-    }
+    public void createCacheFolder() {}
 
     public boolean loadConfig() {
         File jsonFile = new File(filePath + "/VentiBotCfg.json");
@@ -212,7 +195,7 @@ public class BotMain extends JavaPlugin {
         } else {
             try {
                 FileReader fileReader = new FileReader(jsonFile);
-                Reader reader = new InputStreamReader(new FileInputStream(jsonFile), StandardCharsets.UTF_8);
+                Reader reader = new InputStreamReader(Files.newInputStream(jsonFile.toPath()), StandardCharsets.UTF_8);
                 int ch;
                 StringBuilder sb = new StringBuilder();
                 while ((ch = reader.read()) != -1) {
@@ -282,7 +265,7 @@ public class BotMain extends JavaPlugin {
     public void saveConfig() {
         try {
             File jsonFile = new File(filePath + "/VentiBotCfg.json");
-            Writer fileWriter = new OutputStreamWriter(new FileOutputStream(jsonFile), StandardCharsets.UTF_8);;
+            Writer fileWriter = new OutputStreamWriter(Files.newOutputStream(jsonFile.toPath()), StandardCharsets.UTF_8);;
 
             JsonObject root = new JsonObject();
             JsonArray groups = new JsonArray();

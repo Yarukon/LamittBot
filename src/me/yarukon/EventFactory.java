@@ -167,16 +167,6 @@ public class EventFactory extends SimpleListenerHost {
                 }
             }
 
-            if (value.makeOil.getValue()) {
-                if (msg.startsWith(".产油2")) {
-                    new MakeOilThread(api, qq, value, 2).start();
-                } else if (msg.startsWith(".产油3")) {
-                    new MakeOilThread(api, qq, value, 3).start();
-                } else if (msg.startsWith(".产油")) {
-                    new MakeOilThread(api, qq, value, 1).start();
-                }
-            }
-
             if (value.priceCheck.getValue()) {
                 if (msg.startsWith(".mitem")) {
                     String[] sp = msg.split(" ");
@@ -800,74 +790,6 @@ public class EventFactory extends SimpleListenerHost {
         }
     }
 
-    public class MakeOilThread extends ProcessThread {
-
-        public int type;
-
-        public MakeOilThread(Group api, long qq, Values value, int type) {
-            super(api, qq, value);
-            this.type = type;
-        }
-
-        public void action() {
-            String toSend = "";
-            Audio voice;
-            switch (type) {
-                case 1:
-                    toSend = "  \uD83E\uDD13\n" +
-                            "  \uD83D\uDC54\uD83E\uDD33\n" +
-                            "  \uD83D\uDC56\n" +
-                            " \uD83D\uDC5E\uD83D\uDC5E\n" +
-                            "我晒干了沉默~♪\n" +
-                            "悔得很冲动~♫\n" +
-                            "就算这是做错~♬\n" +
-                            "也只是怕错过~♩\n" +
-                            "在一起叫 梦~♫\n" +
-                            "分开了叫 痛~♫\n" +
-                            "是不是说 没有做完的梦最痛~♪";
-                    break;
-
-                case 2:
-                    toSend = "  \uD83E\uDD13\n" +
-                            "  \uD83D\uDC54\uD83E\uDD33\n" +
-                            "  \uD83D\uDC56\n" +
-                            " \uD83D\uDC5E\uD83D\uDC5E\n" +
-                            "我晒干了铖镆~♪\n" +
-                            "悔锝很铳氡~♫\n" +
-                            "就算锗磁做錯~♬\n" +
-                            "铘只铈钯锉过~♩\n" +
-                            "在铱锜叫 锰~♫\n" +
-                            "酚锴了叫 铜~♫\n" +
-                            "铈钚铈说 镁铀做完的锰最铜~♪";
-                    break;
-
-                case 3:
-                    toSend = "  \uD83E\uDD13\n" +
-                            "  \uD83D\uDC54\uD83E\uDD33\n" +
-                            "  \uD83D\uDC56\n" +
-                            " \uD83D\uDC5E\uD83D\uDC5E\n" +
-                            "撾曬豃鰳曟䳮~♪\n" +
-                            "繪惪䓳蟲霘~♫\n" +
-                            "鷲匴䮰蠀糳䣜~♬\n" +
-                            "僷踬実掱䣜粿~♩\n" +
-                            "䵧燚鬐嚐 锰~♫\n" +
-                            "瞓锎鱳藠 铜~♫\n" +
-                            "実埔実槊 袂釉糳菀锝濛酔仝~♪";
-            }
-
-            api.sendMessage(toSend);
-            ExternalResource res = ExternalResource.create(new File(BotMain.INSTANCE.extResources.getAbsolutePath() + File.separator + "oil.amr"));
-            voice = api.uploadAudio(res);
-
-            try {
-                res.close();
-            } catch (Exception ignored) {
-            }
-
-            api.sendMessage(voice);
-        }
-    }
-
     public class MinecraftServerQueryThread extends ProcessThread {
 
         public Keypair stringValue;
@@ -999,8 +921,7 @@ public class EventFactory extends SimpleListenerHost {
                     str += "\n错误 " + obj.get("retcode").getAsInt() + ": " + obj.get("message").getAsString();
                     success = false;
                 } else {
-                    BotMain.INSTANCE.imgUtil.generateStatImage(uid, obj.getAsJsonObject("data"));
-                    ExternalResource res = ExternalResource.create(Paths.get(BotMain.INSTANCE.genshin_outputPath.getAbsolutePath(), uid + ".png").toFile());
+                    ExternalResource res = ExternalResource.create(new ByteArrayInputStream(BotMain.INSTANCE.imgUtil.generateStatImage(uid, obj.getAsJsonObject("data")).toByteArray()));
                     img = api.uploadImage(res);
                     res.close();
                     success = true;
