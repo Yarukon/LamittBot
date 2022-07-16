@@ -123,7 +123,7 @@ public class EventFactory extends SimpleListenerHost {
     private void onGroupCommand(Group api, long groupId, long qq, MessageChain msgChain, String msg, Values value) {
         if (value.autoReply.getValue()) {
             At at = (At) msgChain.stream().filter(At.class::isInstance).findFirst().orElse(null);
-            if (at != null && at.getTarget() == 2692866561L && NodeManager.INSTANCE != null) {
+            if (at != null && at.getTarget() == BotMain.INSTANCE.targetBotQQ && NodeManager.INSTANCE != null) {
                 if (processingQQ.contains(qq)) { //防止滥用
                     return;
                 }
@@ -514,7 +514,7 @@ public class EventFactory extends SimpleListenerHost {
 
     public void huntInfoBroadcast(HuntInfo huntInfo) {
         try {
-            Bot b = Bot.getInstanceOrNull(2692866561L);
+            Bot b = Bot.getInstanceOrNull(BotMain.INSTANCE.targetBotQQ);
             if (b != null) {
                 for (Map.Entry<Long, Values> v : BotMain.INSTANCE.values.entrySet()) {
                     Group g = b.getGroup(v.getKey());

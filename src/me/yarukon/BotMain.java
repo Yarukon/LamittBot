@@ -26,6 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BotMain extends JavaPlugin {
     public long botOwnerQQ;
+    public long targetBotQQ;
 
     public String filePath = "";
     public File extResources;
@@ -194,18 +195,11 @@ public class BotMain extends JavaPlugin {
             }
         } else {
             try {
-                FileReader fileReader = new FileReader(jsonFile);
-                Reader reader = new InputStreamReader(Files.newInputStream(jsonFile.toPath()), StandardCharsets.UTF_8);
-                int ch;
-                StringBuilder sb = new StringBuilder();
-                while ((ch = reader.read()) != -1) {
-                    sb.append((char) ch);
-                }
-                fileReader.close();
-                reader.close();
+                JsonObject root = (JsonObject) JsonParser.parseString(FileUtils.readFileToString(jsonFile.getAbsoluteFile(), "UTF-8"));
 
-                JsonObject root = (JsonObject) JsonParser.parseString(sb.toString());
                 botOwnerQQ = root.get("BotOwnerQQ").getAsLong();
+                targetBotQQ = root.get("TargetBotQQ").getAsLong();
+
                 JsonArray groups = root.get("Groups").getAsJsonArray();
                 for(int i = 0; i < groups.size(); ++i) {
                     JsonObject group = groups.get(i).getAsJsonObject();
@@ -270,6 +264,7 @@ public class BotMain extends JavaPlugin {
             JsonObject root = new JsonObject();
             JsonArray groups = new JsonArray();
             root.addProperty("BotOwnerQQ", this.botOwnerQQ);
+            root.addProperty("TargetBotQQ", this.targetBotQQ);
 
             for(Map.Entry<Long, Values> entry : this.values.entrySet()) {
                 JsonObject group = new JsonObject();
