@@ -36,7 +36,7 @@ public class ImageUtils {
 		font1 = getFont("DatFont", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font2 = getFont("DatFont", 18, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font3 = getFont("DatFont", 14, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font4 = getFont("Sarasa", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
+		font4 = getFont("siyuan", 20, true, BotMain.INSTANCE.extResources.getAbsolutePath());
 	}
 
 	public ByteArrayOutputStream generateStatImage(long id, JsonObject obj) throws Exception {
@@ -46,10 +46,14 @@ public class ImageUtils {
 	}
 
 	public static Font getFont(String fontName, int size, String path) {
+		return getFont(fontName, size, false, path);
+	}
+
+	public static Font getFont(String fontName, int size, boolean otf, String path) {
 		Font font;
 		try {
-			InputStream is = Files.newInputStream(Paths.get(path + File.separator + fontName + ".ttf"));
-			font = Font.createFont(0, is);
+			InputStream is = Files.newInputStream(Paths.get(path + File.separator + fontName + (otf ? ".otf" : ".ttf")));
+			font = Font.createFont(Font.TRUETYPE_FONT, is);
 			font = font.deriveFont(Font.PLAIN, size);
 		} catch (Exception ex) {
 			ex.printStackTrace();
