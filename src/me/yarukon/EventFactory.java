@@ -1,9 +1,7 @@
 package me.yarukon;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import me.yarukon.node.Node;
 import me.yarukon.node.NodeManager;
 import me.yarukon.node.impl.DateNode;
@@ -29,8 +27,8 @@ import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.NewFriendRequestEvent;
-import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.message.data.Image;
+import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.apache.commons.io.FileUtils;
@@ -43,16 +41,16 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventFactory extends SimpleListenerHost {
@@ -170,10 +168,17 @@ public class EventFactory extends SimpleListenerHost {
             if (value.priceCheck.getValue()) {
                 if (msg.startsWith(".mitem")) {
                     String[] sp = msg.split(" ");
-                    if (sp.length == 3) {
-                        new PriceCheckThread(api, qq, value, sp[1], sp[2]).start();
+                    if (sp.length == 4) {
+                        if (!StringUtils.isNumeric(sp[3])) {
+                            api.sendMessage("非数字!");
+                            return;
+                        }
+
+                        new PriceCheckThread(api, qq, value, sp[1], sp[2], Integer.parseInt(sp[3])).start();
+                    } else if(sp.length == 3) {
+                        new PriceCheckThread(api, qq, value, sp[1], sp[2], 10).start();
                     } else {
-                        api.sendMessage("用法: .mitem <物品名称> <大区/服务器名称>");
+                        api.sendMessage("用法: .mitem <物品名称> <大区/服务器名称> [显示数量]");
                     }
                 }
             }
@@ -637,10 +642,13 @@ public class EventFactory extends SimpleListenerHost {
         public String itemName;
         public String zoneOrWorld;
 
-        public PriceCheckThread(Group api, long qq, Values value, String itemName, String zoneOrWorld) {
+        public int listingAmount;
+
+        public PriceCheckThread(Group api, long qq, Values value, String itemName, String zoneOrWorld, int listingAmount) {
             super(api, qq, value);
             this.itemName = itemName;
             this.zoneOrWorld = zoneOrWorld;
+            this.listingAmount = listingAmount;
         }
 
         @Override
@@ -660,7 +668,7 @@ public class EventFactory extends SimpleListenerHost {
 
                 if (BotMain.INSTANCE.itemIDs.containsKey(itemName)) {
                     int itemID = BotMain.INSTANCE.itemIDs.get(itemName);
-                    String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=10" + (isHQ ? "&hq=true" : ""));
+                    String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : ""));
                     UniversalisJson json = BotUtils.gson.fromJson(result, UniversalisJson.class);
                     if (json.itemID != 0) {
                         ByteArrayOutputStream stream = genImage(itemName, isHQ, zoneOrWorld, json);
