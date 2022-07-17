@@ -720,7 +720,7 @@ public class EventFactory extends SimpleListenerHost {
                 }
 
                 stream = new ByteArrayOutputStream();
-                ImageUtils.createImage(800, 340, false, elements, stream);
+                ImageUtils.createImage(800, 0, true, elements, stream);
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
