@@ -47,6 +47,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -637,6 +638,7 @@ public class EventFactory extends SimpleListenerHost {
     }
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    ArrayList<String> nameLikeItems = new ArrayList<>();
 
     public class PriceCheckThread extends ProcessThread {
         public String itemName;
@@ -666,7 +668,7 @@ public class EventFactory extends SimpleListenerHost {
                     itemName = itemName.replace("高品质", "");
                 }
 
-                if (BotMain.INSTANCE.itemIDs.containsKey(itemName)) {
+                if (containsItem(itemName, nameLikeItems)) {
                     int itemID = BotMain.INSTANCE.itemIDs.get(itemName);
                     String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : ""));
                     UniversalisJson json = BotUtils.gson.fromJson(result, UniversalisJson.class);
@@ -688,12 +690,34 @@ public class EventFactory extends SimpleListenerHost {
                         api.sendMessage("物品 " + itemName + " 不支持在市场上售卖!");
                     }
                 } else {
-                    api.sendMessage("物品 " + itemName + " 不存在!");
+                    ArrayList<String> subArray = new ArrayList<>(nameLikeItems.size() > 10 ? nameLikeItems.subList(0, 10) : nameLikeItems);
+                    api.sendMessage("物品 " + itemName + " 不存在! " + (subArray.size() > 0 ? nameLikeItems.size() <= 10 ? "相似名称的物品有 " + String.join(", ", subArray) : "相似名称的物品有 " + String.join(", ", subArray) + "等" + nameLikeItems.size() + "个结果" : "且不存在相似名称的物品!"));
+                    nameLikeItems.clear();
                 }
             } else {
                 api.sendMessage("大区/服务器 " + zoneOrWorld + " 不存在!");
             }
             super.action();
+        }
+
+        public boolean containsItem(String itemName, ArrayList<String> nameLikeItems) {
+            boolean wannaSearch = itemName.startsWith("?");
+            String newItemName = null;
+
+            if (wannaSearch) {
+                newItemName = itemName.replace("?", "");
+            }
+
+            for (Map.Entry<String, Integer> entry : BotMain.INSTANCE.itemIDs.entrySet()) {
+                if (entry.getKey().equals(itemName)) {
+                    nameLikeItems.clear();
+                    return true;
+                } else if (entry.getKey().contains(itemName) || (wannaSearch && entry.getKey().contains(newItemName))) {
+                    nameLikeItems.add(entry.getKey());
+                }
+            }
+
+            return false;
         }
 
         public ByteArrayOutputStream genImage(String itemName, boolean isHQ, String zoneOrWorld, UniversalisJson jsonIn) {
