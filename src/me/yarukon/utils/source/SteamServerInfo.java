@@ -149,6 +149,23 @@ public class SteamServerInfo {
 		return latency;
 	}
 
+	public String getNormalServerType() {
+		switch ((char) this.getType()) {
+			case 'l':
+				return "Linux";
+
+			case 'w':
+				return "Windows";
+
+			case 'm':
+				return "MacOS";
+
+			default:
+				return "Unknown";
+		}
+	}
+
+
 	private int getStringLength(int start, byte[] buffer) {
 		for (int i = start; i < buffer.length; i++) {
 			if (buffer[i] == 0)

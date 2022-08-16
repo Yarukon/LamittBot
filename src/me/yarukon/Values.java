@@ -35,6 +35,9 @@ public class Values {
     // 自动回复
     public BooleanValue autoReply = new BooleanValue("AutoReply", false, valuesList);
 
+    // 地图查询 (临时)
+    public BooleanValue mapQuery = new BooleanValue("MapQuery", false, valuesList);
+
     public Values(long groupID) {
         this.groupID = groupID;
     }
