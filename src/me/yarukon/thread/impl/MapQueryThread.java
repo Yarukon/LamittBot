@@ -19,7 +19,7 @@ public class MapQueryThread extends ProcessThread {
         SteamServerInfo result = query.getInfo();
 
         if (result != null) {
-            api.sendMessage(new At(qq).plus("杜昂没给我下载地址 别急! 当前地图: " + result.getMap()));
+            api.sendMessage(new At(qq).plus(String.format("http://39.105.209.208:12249/zs/maps/%s.bsp.bz2", result.getMap())));
         } else {
             api.sendMessage(new At(qq).plus("无法连接至服务器!"));
         }
