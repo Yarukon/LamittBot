@@ -121,43 +121,33 @@ public class EventFactory extends SimpleListenerHost {
                 return;
             }
 
-            if (value.enableSSI.getValue()) { //起源服务器信息查询功能
-                if (value.SSIServerList.hasKey(msg.substring(1))) {
-                    new ValveServerQueryThread(api, qq, value, value.SSIServerList.getValue(msg.substring(1))).start();
-                }
+            if (value.enableSSI.getValue() && value.SSIServerList.hasKey(msg.substring(1))) { //起源服务器信息查询功能
+                new ValveServerQueryThread(api, qq, value, value.SSIServerList.getValue(msg.substring(1))).start();
             }
 
-            if (value.mapQuery.getValue()) {
-                if (value.SSIServerList.hasKey(msg.substring(1))) {
-                    new MapQueryThread(api, qq, value).start();
-                }
+            if (value.mapQuery.getValue() && msg.startsWith(".map")) {
+                new MapQueryThread(api, qq, value).start();
             }
 
-            if (value.daXueXi.getValue()) {
-                if (msg.startsWith(".大学习") && msg.split(" ").length == 2) {
-                    new DaXueXiThread(api, qq, value, msg.split(" ")[1]).start();
-                }
+            if (value.daXueXi.getValue() && msg.startsWith(".大学习") && msg.split(" ").length == 2) {
+                new DaXueXiThread(api, qq, value, msg.split(" ")[1]).start();
             }
 
-            if (value.genshinInfoQuery.getValue()) { //原神UID信息查询
-                if (msg.startsWith(".原神查询")) {
-                    String[] splited = msg.split(" ");
-                    if (splited.length != 2) return; //当长度超出限制时不进行解析
-                    if (!StringUtils.isNumeric(splited[1])) return; //当文本中含有非数字字符时不进行解析
-                    if (splited[1].length() != 9) return; //当值不等于9位时不进行解析
+            if (value.genshinInfoQuery.getValue() && msg.startsWith(".原神查询")) { //原神UID信息查询
+                String[] splited = msg.split(" ");
+                if (splited.length != 2) return; //当长度超出限制时不进行解析
+                if (!StringUtils.isNumeric(splited[1])) return; //当文本中含有非数字字符时不进行解析
+                if (splited[1].length() != 9) return; //当值不等于9位时不进行解析
 
-                    long uid = Long.parseLong(splited[1]);
-                    new GenshinQueryThread(api, qq, value, uid).start();
-                }
+                long uid = Long.parseLong(splited[1]);
+                new GenshinQueryThread(api, qq, value, uid).start();
             }
 
-            if (value.minecraftStatQuery.getValue()) {
-                if (value.minecraftServerIP.hasKey(msg.substring(1))) {
-                    new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
-                }
+            if (value.minecraftStatQuery.getValue() && value.minecraftServerIP.hasKey(msg.substring(1))) {
+                new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
             }
 
-            if (msg.startsWith(".mitem") && value.priceCheck.getValue()) {
+            if (value.priceCheck.getValue() && msg.startsWith(".mitem")) {
                 String[] sp = msg.split(" ");
                 if (sp.length == 4) {
                     if (!StringUtils.isNumeric(sp[3])) {
