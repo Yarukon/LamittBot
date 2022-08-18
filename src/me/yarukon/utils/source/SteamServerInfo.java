@@ -150,7 +150,8 @@ public class SteamServerInfo {
 	}
 
 	public String getNormalServerType() {
-		switch ((char) this.getType()) {
+		char c = (char) this.getType();
+		switch (c) {
 			case 'l':
 				return "Linux";
 
@@ -158,7 +159,7 @@ public class SteamServerInfo {
 				return "Windows";
 
 			case 'm':
-				return "MacOS";
+				return "OSX";
 
 			default:
 				return "Unknown";

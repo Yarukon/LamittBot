@@ -125,10 +125,6 @@ public class EventFactory extends SimpleListenerHost {
                 new ValveServerQueryThread(api, qq, value, value.SSIServerList.getValue(msg.substring(1))).start();
             }
 
-            if (value.mapQuery.getValue() && msg.startsWith(".map")) {
-                new MapQueryThread(api, qq, value).start();
-            }
-
             if (value.daXueXi.getValue() && msg.startsWith(".大学习") && msg.split(" ").length == 2) {
                 new DaXueXiThread(api, qq, value, msg.split(" ")[1]).start();
             }
@@ -432,7 +428,7 @@ public class EventFactory extends SimpleListenerHost {
                             sb.append(sp[1]).append(" 的群设定:\n");
 
                             for (Value v : INSTANCE.values.get(Long.parseLong(sp[1])).valuesList) {
-                                sb.append(v.getKey()).append(" - ").append(v.getValue()).append("\n");
+                                sb.append(v.getKey()).append(" - ").append((v instanceof MultiBooleanValue || v instanceof MultiMapValue || v instanceof MultiStringValue) ? "不支持显示" : v.getValue()).append("\n");
                             }
 
                             api.sendMessage(sb.toString());
