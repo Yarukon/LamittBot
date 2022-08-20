@@ -397,6 +397,40 @@ public class EventFactory extends SimpleListenerHost {
                 }
             }
 
+            if (msg.startsWith(".发送消息")) {
+                if (sp.length >= 3) {
+                    if (StringUtils.isNumeric(sp[1]) && Long.parseLong(sp[1]) > 0) {
+                        try {
+                            StringBuilder sb = new StringBuilder();
+                            if (sp.length > 3) {
+                                for(int i = 2; i < sp.length; ++i) {
+                                    sb.append(sp[i]).append(" ");
+                                }
+                            } else {
+                                sb.append(sp[2]);
+                            }
+
+                            Bot b = Bot.getInstanceOrNull(INSTANCE.targetBotQQ);
+                            if (b != null) {
+                                Group group = b.getGroupOrFail(Long.parseLong(sp[1]));
+                                if (group != null) {
+                                    group.sendMessage(sb.toString());
+                                    api.sendMessage("成功: " + group.getName() + " -> " + sb);
+                                } else {
+                                    api.sendMessage("Bot未在指定的群号内!");
+                                }
+                            }
+                        } catch (Exception ex) {
+                            api.sendMessage("执行时发生错误! exception:\n" + ex.getLocalizedMessage());
+                        }
+                    } else {
+                        api.sendMessage("无效群号!");
+                    }
+                } else {
+                    api.sendMessage("用法: .发送消息 <群号> <消息>");
+                }
+            }
+
             if (msg.startsWith(".群列表")) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("当前存在 ").append(INSTANCE.groupIDs.size()).append(" 个群配置:\n");
