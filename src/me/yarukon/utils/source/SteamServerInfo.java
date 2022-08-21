@@ -149,8 +149,8 @@ public class SteamServerInfo {
 		return latency;
 	}
 
-	public String getNormalServerType() {
-		char c = (char) this.getType();
+	public String getServerEnvironment() {
+		char c = (char) this.getEnvironment();
 		switch (c) {
 			case 'l':
 				return "Linux";
