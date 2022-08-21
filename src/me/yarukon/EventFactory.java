@@ -76,7 +76,9 @@ public class EventFactory extends SimpleListenerHost {
 
                 this.onGroupCommand(g, g.getId(), s.getId(), msgChain, msg, v);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @EventHandler
