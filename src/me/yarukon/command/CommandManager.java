@@ -4,13 +4,9 @@ import me.yarukon.BotMain;
 import me.yarukon.EventFactory;
 import me.yarukon.Values;
 import me.yarukon.command.impl.CommandDXX;
-import me.yarukon.command.impl.pChat.CommandHelp;
+import me.yarukon.command.impl.pChat.*;
 import me.yarukon.command.impl.CommandMItem;
 import me.yarukon.command.impl.CommandReplyReload;
-import me.yarukon.command.impl.pChat.CommandAddGroup;
-import me.yarukon.command.impl.pChat.CommandDelGroup;
-import me.yarukon.command.impl.pChat.CommandGroupList;
-import me.yarukon.command.impl.pChat.CommandJoinedGroupList;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
@@ -37,6 +33,7 @@ public class CommandManager {
         addCommand(new CommandAddGroup());
         addCommand(new CommandDelGroup());
         addCommand(new CommandGroupList());
+        addCommand(new CommandQueueClear());
         addCommand(new CommandJoinedGroupList());
 
         // 两者
