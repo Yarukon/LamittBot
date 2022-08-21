@@ -17,7 +17,7 @@ public class DaXueXiThread extends ProcessThread {
     }
 
     public void action() {
-        if (cmd.equals("列表")) {
+        if (cmd.equals("list")) {
             try {
                 DaXueXiUtil.getIDs(api);
             } catch (Exception exception) {

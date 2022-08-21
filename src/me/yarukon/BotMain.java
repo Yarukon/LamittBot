@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.value.*;
@@ -47,9 +48,6 @@ public class BotMain extends JavaPlugin {
     // 物品ID缓存
     public HashMap<String, Integer> itemIDs = new HashMap<>();
 
-    // 自定义汉化缓存
-    public HashMap<String, String> customLocalize = new HashMap<>();
-
     // 自动回复节点
     public File autoReplyPath;
 
@@ -65,10 +63,14 @@ public class BotMain extends JavaPlugin {
     public final String[] dataCenterName = new String[] {"豆豆柴", "莫古力", "猫小胖", "陆行鸟"};
     public final String[] allZoneName = new String[] {"水晶塔", "银泪湖", "太阳海岸", "伊修加德", "拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿", "延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园", "宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"};
 
+    public CommandManager commandManager;
+
     @Override
     public void onEnable() {
         //初始化
         INSTANCE = this;
+
+        commandManager = new CommandManager();
 
         values.clear();
         this.getLogger().info("[Yarukon] Venti Bot 正在启动...");
@@ -111,16 +113,6 @@ public class BotMain extends JavaPlugin {
             while ((line = br.readLine()) != null) {
                 String[] splited = line.split(",");
                 itemIDs.put(splited[1], Integer.parseInt(splited[0]));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        // 读取汉化并缓存
-        try {
-            JsonObject obj = (JsonObject) JsonParser.parseString(FileUtils.readFileToString(new File(extResources.getAbsolutePath() + File.separator + "HuntLocalize.json"), StandardCharsets.UTF_8));
-            for(Map.Entry<String, JsonElement> elementEntry : obj.entrySet()) {
-                this.customLocalize.put(elementEntry.getKey(), elementEntry.getValue().getAsString());
             }
         } catch (Exception ex) {
             ex.printStackTrace();

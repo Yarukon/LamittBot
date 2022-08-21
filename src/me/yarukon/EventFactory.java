@@ -2,6 +2,7 @@ package me.yarukon;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.thread.impl.*;
 import me.yarukon.utils.FFXIVUtil;
@@ -9,6 +10,7 @@ import me.yarukon.value.*;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
@@ -62,10 +64,19 @@ public class EventFactory extends SimpleListenerHost {
             }
 
             if (INSTANCE.groupIDs.contains(event.getGroup().getId())) {
-                this.onGroupCommand(event.getGroup(), event.getGroup().getId(), event.getSender().getId(), event.getMessage(), event.getMessage().contentToString(), INSTANCE.values.get(event.getGroup().getId()));
+                Group g = event.getGroup();
+                Member s = event.getSender();
+                MessageChain msgChain = event.getMessage();
+                String msg = msgChain.contentToString();
+                Values v = INSTANCE.values.get(event.getGroup().getId());
+
+                if (msg.startsWith(CommandManager.PREFIX)) {
+                    BotMain.INSTANCE.commandManager.groupChatCommand(g, s, msgChain, msg, v);
+                }
+
+                this.onGroupCommand(g, g.getId(), s.getId(), msgChain, msg, v);
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     @EventHandler
@@ -75,10 +86,18 @@ public class EventFactory extends SimpleListenerHost {
         }
 
         try {
-            if (event.getFriend().getId() == INSTANCE.botOwnerQQ) {
-                this.onFriendCommand(event.getFriend(), event.getMessage().contentToString());
+            Friend f = event.getFriend();
+            String s = event.getMessage().contentToString();
+
+            if (s.startsWith(CommandManager.PREFIX)) {
+                BotMain.INSTANCE.commandManager.privateChatCommand(f, s);
+
+                if (f.getId() == INSTANCE.botOwnerQQ) {
+                    this.onFriendCommand(f, s);
+                }
             }
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -117,16 +136,14 @@ public class EventFactory extends SimpleListenerHost {
         }
 
         if (msg.startsWith(".")) {
-            if (processingQQ.contains(qq)) { //防止滥用
-                return;
-            }
 
+            // 因为这些是通过关键词判断的, 只能保留
             if (value.enableSSI.getValue() && value.SSIServerList.hasKey(msg.substring(1))) { //起源服务器信息查询功能
                 new ValveServerQueryThread(api, qq, value, value.SSIServerList.getValue(msg.substring(1))).start();
             }
 
-            if (value.daXueXi.getValue() && msg.startsWith(".大学习") && msg.split(" ").length == 2) {
-                new DaXueXiThread(api, qq, value, msg.split(" ")[1]).start();
+            if (value.minecraftStatQuery.getValue() && value.minecraftServerIP.hasKey(msg.substring(1))) {
+                new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
             }
 
             if (value.genshinInfoQuery.getValue() && msg.startsWith(".原神查询")) { //原神UID信息查询
@@ -139,40 +156,8 @@ public class EventFactory extends SimpleListenerHost {
                 new GenshinQueryThread(api, qq, value, uid).start();
             }
 
-            if (value.minecraftStatQuery.getValue() && value.minecraftServerIP.hasKey(msg.substring(1))) {
-                new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
-            }
-
-            if (value.priceCheck.getValue() && msg.startsWith(".mitem")) {
-                String[] sp = msg.split(" ");
-                if (sp.length == 4) {
-                    if (!StringUtils.isNumeric(sp[3])) {
-                        api.sendMessage("非数字!");
-                        return;
-                    }
-
-                    new PriceCheckThread(api, qq, value, sp[1], sp[2], Integer.parseInt(sp[3])).start();
-                } else if(sp.length == 3) {
-                    new PriceCheckThread(api, qq, value, sp[1], sp[2], 10).start();
-                } else {
-                    api.sendMessage("用法: .mitem <物品名称> <大区/服务器名称> [显示数量]");
-                }
-            }
-
             if (qq == INSTANCE.botOwnerQQ) {
                 String[] sp = msg.split(" ");
-
-                if (msg.startsWith(".reply reload")) {
-                    if (NodeManager.INSTANCE != null) {
-                        try {
-                            NodeManager.INSTANCE.load((JsonObject) JsonParser.parseString(FileUtils.readFileToString(BotMain.INSTANCE.autoReplyPath, StandardCharsets.UTF_8)));
-                            api.sendMessage("重载了 " + NodeManager.INSTANCE.nodes.size() + " 个自动回复节点!");
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                            api.sendMessage("重载失败! ERR: " + ex.getLocalizedMessage());
-                        }
-                    }
-                }
 
                 if (msg.startsWith(".变量列表")) {
                     StringBuilder sb = new StringBuilder();
@@ -362,41 +347,6 @@ public class EventFactory extends SimpleListenerHost {
         if (msg.startsWith(".")) {
             String[] sp = msg.split(" ");
 
-            if (msg.startsWith(".帮助")) {
-                api.sendMessage("========== Venti Bot ==========\n" +
-                        ".帮助 - 显示此帮助菜单\n" +
-                        ".添加群 <群号> - 新建并启用指定群的配置\n" +
-                        ".移除群 <群号> - 移除指定群的配置\n" +
-                        ".群列表 - 列出已启用的群\n" +
-                        ".变量列表 <群号> - 列出指定群的所有变量\n" +
-                        ".所有群列表 - 显示机器人当前加入的所有群组\n" +
-                        "注意: 若要配置群配置请在群内配置");
-            }
-
-            if (msg.startsWith(".添加群")) {
-                if (sp.length == 2) {
-                    if (StringUtils.isNumeric(sp[1]) && Long.parseLong(sp[1]) > 0) {
-                        api.sendMessage(INSTANCE.addGroup(Long.parseLong(sp[1])));
-                    } else {
-                        api.sendMessage("参数有误, 请检查!");
-                    }
-                } else {
-                    api.sendMessage("参数有误, 请检查!");
-                }
-            }
-
-            if (msg.startsWith(".移除群")) {
-                if (sp.length == 2) {
-                    if (StringUtils.isNumeric(sp[1]) && Long.parseLong(sp[1]) > 0) {
-                        api.sendMessage(INSTANCE.removeGroup(Long.parseLong(sp[1])));
-                    } else {
-                        api.sendMessage("参数有误, 请检查!");
-                    }
-                } else {
-                    api.sendMessage("参数有误, 请检查!");
-                }
-            }
-
             if (msg.startsWith(".发送消息")) {
                 if (sp.length >= 3) {
                     if (StringUtils.isNumeric(sp[1]) && Long.parseLong(sp[1]) > 0) {
@@ -421,7 +371,7 @@ public class EventFactory extends SimpleListenerHost {
                                 }
                             }
                         } catch (Exception ex) {
-                            api.sendMessage("执行时发生错误! exception:\n" + ex.getLocalizedMessage());
+                            api.sendMessage("执行时发生错误! Exception:\n" + ex.getLocalizedMessage());
                         }
                     } else {
                         api.sendMessage("无效群号!");
@@ -429,29 +379,6 @@ public class EventFactory extends SimpleListenerHost {
                 } else {
                     api.sendMessage("用法: .发送消息 <群号> <消息>");
                 }
-            }
-
-            if (msg.startsWith(".群列表")) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("当前存在 ").append(INSTANCE.groupIDs.size()).append(" 个群配置:\n");
-
-                for (long id : INSTANCE.groupIDs) {
-                    Group g = api.getBot().getGroup(id);
-                    sb.append(id).append(" - ").append(g == null ? "群列表不存在" : g.getName()).append("\n");
-                }
-
-                api.sendMessage(sb.substring(0, sb.length() - 1));
-            }
-
-            if (msg.startsWith(".所有群列表")) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("当前共加入了 ").append(api.getBot().getGroups().size()).append(" 个群:\n");
-
-                for (Group g : api.getBot().getGroups()) {
-                    sb.append(g.getId()).append(" - ").append(g.getName()).append("\n");
-                }
-
-                api.sendMessage(sb.substring(0, sb.length() - 1));
             }
 
             if (msg.startsWith(".变量列表")) {
@@ -489,11 +416,6 @@ public class EventFactory extends SimpleListenerHost {
 
                     boolean isFate = huntInfo.rank.equals("FATE") && v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().fateFilter.hasValue(huntInfo.name);
                     if ((v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().ranks.getValue(huntInfo.rank)) || isFate) {
-
-                        if (BotMain.INSTANCE.customLocalize.containsKey(huntInfo.name)) {
-                            huntInfo.name = BotMain.INSTANCE.customLocalize.get(huntInfo.name);
-                        }
-
                         if (!BotMain.INSTANCE.huntMap.containsKey(huntInfo.mapPath)) {
                             File f = new File(BotMain.INSTANCE.huntMapPath, huntInfo.mapPath + ".png");
                             if (f.exists()) {
@@ -519,9 +441,9 @@ public class EventFactory extends SimpleListenerHost {
 
                         MessageChain chain;
                         if (isFate) {
-                            chain = new MessageChainBuilder().append("[" + huntInfo.dataCenter + "-" + huntInfo.region + "] " + huntInfo.rank + " " + huntInfo.name + " " + huntInfo.zone + " (" + String.format("%.2f", huntInfo.x) + ", " + String.format("%.2f", huntInfo.y) + ") " + (huntInfo.fateState)).append("\n").append(image != null ? image : new PlainText("不存在该地图文件 " + huntInfo.mapPath)).asMessageChain();
+                            chain = new MessageChainBuilder().append("[" + huntInfo.dataCenter + "-" + huntInfo.region + "] " + huntInfo.rank + " " + huntInfo.name + " " + huntInfo.zone + " (" + String.format("%.1f", huntInfo.x) + ", " + String.format("%.1f", huntInfo.y) + ") " + (huntInfo.fateState)).append("\n").append(image != null ? image : new PlainText("不存在该地图文件 " + huntInfo.mapPath)).asMessageChain();
                         } else {
-                            chain = new MessageChainBuilder().append("[" + huntInfo.dataCenter + "-" + huntInfo.region + "] Rank " + huntInfo.rank + " " + huntInfo.name + " " + huntInfo.zone + " (" + String.format("%.2f", huntInfo.x) + ", " + String.format("%.2f", huntInfo.y) + ")" + (huntInfo.isDead ? " [死亡]" : "")).append(!huntInfo.isDead ? "\n" : "").append(image != null ? image : huntInfo.isDead ? new PlainText("") : new PlainText("不存在该地图文件 " + huntInfo.mapPath)).asMessageChain();
+                            chain = new MessageChainBuilder().append("[" + huntInfo.dataCenter + "-" + huntInfo.region + "] Rank " + huntInfo.rank + " " + huntInfo.name + " " + huntInfo.zone + " (" + String.format("%.1f", huntInfo.x) + ", " + String.format("%.1f", huntInfo.y) + ")" + (huntInfo.isDead ? " [死亡]" : "")).append(!huntInfo.isDead ? "\n" : "").append(image != null ? image : huntInfo.isDead ? new PlainText("") : new PlainText("不存在该地图文件 " + huntInfo.mapPath)).asMessageChain();
                         }
 
                         g.sendMessage(chain);
