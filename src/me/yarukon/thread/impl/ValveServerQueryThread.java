@@ -60,7 +60,7 @@ public class ValveServerQueryThread extends ProcessThread {
                         "地图: " + currentMap + "\n" +
                         "系统类型: " + serverEnv + "\n" +
                         "在线玩家: " + currentPly + "\n" +
-                        "延时: " + latency + "\n" +
+                        "延时: " + latency +
                         (value.enableSSIPlyList.getValue() ? "\n——————————————\n" + (plys.toString().endsWith("\n") ? plys.substring(0, plys.length() - 1) : plys) : "")));
     }
 }
