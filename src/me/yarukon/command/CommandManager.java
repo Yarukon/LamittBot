@@ -4,6 +4,7 @@ import me.yarukon.BotMain;
 import me.yarukon.EventFactory;
 import me.yarukon.Values;
 import me.yarukon.command.impl.CommandDXX;
+import me.yarukon.command.impl.CommandGenshinQuery;
 import me.yarukon.command.impl.pChat.*;
 import me.yarukon.command.impl.CommandMItem;
 import me.yarukon.command.impl.CommandReplyReload;
@@ -27,6 +28,7 @@ public class CommandManager {
         // 群指令
         addCommand(new CommandDXX());
         addCommand(new CommandMItem());
+        addCommand(new CommandGenshinQuery());
 
         // 私聊指令
         addCommand(new CommandHelp());

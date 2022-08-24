@@ -138,7 +138,6 @@ public class EventFactory extends SimpleListenerHost {
         }
 
         if (msg.startsWith(".")) {
-
             // 因为这些是通过关键词判断的, 只能保留
             if (value.enableSSI.getValue() && value.SSIServerList.hasKey(msg.substring(1))) { //起源服务器信息查询功能
                 new ValveServerQueryThread(api, qq, value, value.SSIServerList.getValue(msg.substring(1))).start();
@@ -146,16 +145,6 @@ public class EventFactory extends SimpleListenerHost {
 
             if (value.minecraftStatQuery.getValue() && value.minecraftServerIP.hasKey(msg.substring(1))) {
                 new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
-            }
-
-            if (value.genshinInfoQuery.getValue() && msg.startsWith(".原神查询")) { //原神UID信息查询
-                String[] splited = msg.split(" ");
-                if (splited.length != 2) return; //当长度超出限制时不进行解析
-                if (!StringUtils.isNumeric(splited[1])) return; //当文本中含有非数字字符时不进行解析
-                if (splited[1].length() != 9) return; //当值不等于9位时不进行解析
-
-                long uid = Long.parseLong(splited[1]);
-                new GenshinQueryThread(api, qq, value, uid).start();
             }
 
             if (qq == INSTANCE.botOwnerQQ) {
