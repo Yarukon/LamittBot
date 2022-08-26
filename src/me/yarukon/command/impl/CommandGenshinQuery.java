@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class CommandGenshinQuery extends Command {
     public CommandGenshinQuery() {
-        super("原神查询", "原神信息查询");
+        super("genshin", "原神信息查询");
     }
 
     @Override

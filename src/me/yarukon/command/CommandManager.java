@@ -3,11 +3,8 @@ package me.yarukon.command;
 import me.yarukon.BotMain;
 import me.yarukon.EventFactory;
 import me.yarukon.Values;
-import me.yarukon.command.impl.CommandDXX;
-import me.yarukon.command.impl.CommandGenshinQuery;
+import me.yarukon.command.impl.*;
 import me.yarukon.command.impl.pChat.*;
-import me.yarukon.command.impl.CommandMItem;
-import me.yarukon.command.impl.CommandReplyReload;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
@@ -28,6 +25,7 @@ public class CommandManager {
         // 群指令
         addCommand(new CommandDXX());
         addCommand(new CommandMItem());
+        addCommand(new CommandSonar());
         addCommand(new CommandGenshinQuery());
 
         // 私聊指令
@@ -61,7 +59,7 @@ public class CommandManager {
 
         try {
             if (command != null && command.getType() != CommandType.PRIVATE_CHAT) {
-                if (command.isOwnerOnly() && group.getId() != BotMain.INSTANCE.botOwnerQQ)
+                if (command.isOwnerOnly() && (command.getOwnerOnlyType() == OwnerOnlyType.BOTH || command.getOwnerOnlyType() == OwnerOnlyType.GROUP_CHAT) && sender.getId() != BotMain.INSTANCE.botOwnerQQ)
                     return;
 
                 String[] args = new String[split.length - 1];
@@ -83,7 +81,7 @@ public class CommandManager {
 
         try {
             if (command != null && command.getType() != CommandType.GROUP_CHAT) {
-                if (command.isOwnerOnly() && friend.getId() != BotMain.INSTANCE.botOwnerQQ)
+                if (command.isOwnerOnly() && (command.getOwnerOnlyType() == OwnerOnlyType.BOTH || command.getOwnerOnlyType() == OwnerOnlyType.PRIVATE_CHAT) && friend.getId() != BotMain.INSTANCE.botOwnerQQ)
                     return;
 
                 String[] args = new String[split.length - 1];

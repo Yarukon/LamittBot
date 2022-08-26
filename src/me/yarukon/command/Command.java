@@ -13,6 +13,8 @@ public abstract class Command {
     private final CommandType type;
     private boolean ownerOnly = false;
 
+    private OwnerOnlyType ownerOnlyType = OwnerOnlyType.BOTH;
+
     private String usage;
 
     public Command(String name) {
@@ -63,6 +65,18 @@ public abstract class Command {
 
     public String getUsage() {
         return "使用方法: " + usage;
+    }
+
+    public OwnerOnlyType getOwnerOnlyType() {
+        return ownerOnlyType;
+    }
+
+    public void setOwnerOnlyType(OwnerOnlyType ownerOnlyType) {
+        this.ownerOnlyType = ownerOnlyType;
+    }
+
+    public void sendUsage(Group group) {
+        group.sendMessage(this.getUsage());
     }
 
     public abstract void groupChat(String[] args, Group group, Member sender, MessageChain msgChain, String msg, Values value);
