@@ -22,7 +22,7 @@ public class CommandHelp extends Command {
         StringBuilder sb = new StringBuilder();
         for (Command c : BotMain.INSTANCE.commandManager.commands) {
             if (c.getType() != CommandType.PRIVATE_CHAT) {
-                sb.append(".").append(c.getName()).append(" - ").append(c.getHelpMessage()).append(c.isOwnerOnly() && (c.getOwnerOnlyType() == OwnerOnlyType.BOTH || c.getOwnerOnlyType() == OwnerOnlyType.GROUP_CHAT) ? " [仅主人可用]" : "").append("\n");
+                sb.append(".").append(c.getName()).append(" - ").append(c.getHelpMessage()).append(c.isOwnerOnly() && (c.getOwnerOnlyType() == OwnerOnlyType.BOTH || c.getOwnerOnlyType() == OwnerOnlyType.GROUP_CHAT) ? " [仅主人可用]" : "").append(!this.isCommandUsable(value) ? " [未启用]" : "").append("\n");
             }
         }
 

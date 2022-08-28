@@ -30,4 +30,9 @@ public class CommandGenshinQuery extends Command {
     public void privateChat(String[] args, Friend friend, String msg) {
 
     }
+
+    @Override
+    public boolean isCommandUsable(Values values) {
+        return values.genshinInfoQuery.getValueState();
+    }
 }

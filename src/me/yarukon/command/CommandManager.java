@@ -29,7 +29,6 @@ public class CommandManager {
         addCommand(new CommandGenshinQuery());
 
         // 私聊指令
-        addCommand(new CommandHelp());
         addCommand(new CommandAddGroup());
         addCommand(new CommandDelGroup());
         addCommand(new CommandGroupList());
@@ -37,6 +36,7 @@ public class CommandManager {
         addCommand(new CommandJoinedGroupList());
 
         // 两者
+        addCommand(new CommandHelp());
         addCommand(new CommandReplyReload());
     }
 

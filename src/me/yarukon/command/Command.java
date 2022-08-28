@@ -79,6 +79,10 @@ public abstract class Command {
         group.sendMessage(this.getUsage());
     }
 
+    public boolean isCommandUsable(Values values) {
+        return true;
+    }
+
     public abstract void groupChat(String[] args, Group group, Member sender, MessageChain msgChain, String msg, Values value);
 
     public abstract void privateChat(String[] args, Friend friend, String msg);
