@@ -1,10 +1,12 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
+
+import me.yarukon.value.ValueBase;
 
 import java.util.ArrayList;
 
-public class StringValue extends Value {
+public class StringValue extends ValueBase {
 
-	public StringValue(String key, String value, ArrayList<Value> targetList) {
+	public StringValue(String key, String value, ArrayList<ValueBase> targetList) {
         this.key = key;
         this.value = value;
 

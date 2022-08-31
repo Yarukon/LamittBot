@@ -1,6 +1,6 @@
 package me.yarukon.thread.impl;
 
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.DaXueXiUtil;
 import net.mamoe.mirai.contact.Group;

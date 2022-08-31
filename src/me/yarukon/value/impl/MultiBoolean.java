@@ -1,4 +1,4 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
 
 public class MultiBoolean {
     public String name;

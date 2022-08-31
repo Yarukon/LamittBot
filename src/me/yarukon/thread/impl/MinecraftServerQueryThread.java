@@ -1,9 +1,9 @@
 package me.yarukon.thread.impl;
 
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.MineStat;
-import me.yarukon.value.Keypair;
+import me.yarukon.value.impl.Keypair;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.At;
 

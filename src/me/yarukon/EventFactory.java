@@ -1,12 +1,12 @@
 package me.yarukon;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.thread.impl.*;
 import me.yarukon.utils.FFXIVUtil;
+import me.yarukon.utils.json.HuntInfo;
 import me.yarukon.value.*;
+import me.yarukon.value.impl.*;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -21,7 +21,6 @@ import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -33,8 +32,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -153,7 +150,7 @@ public class EventFactory extends SimpleListenerHost {
                 if (msg.startsWith(".变量列表")) {
                     StringBuilder sb = new StringBuilder();
                     sb.append(groupId).append(" 的群设定:\n");
-                    for (Value v : INSTANCE.values.get(groupId).valuesList) {
+                    for (ValueBase v : INSTANCE.values.get(groupId).valuesList) {
                         sb.append(v.getKey()).append(" - ").append((v instanceof MultiBooleanValue || v instanceof MultiMapValue || v instanceof MultiStringValue) ? "不支持显示" : v.getValue()).append("\n");
                     }
                     api.sendMessage(sb.toString());
@@ -163,7 +160,7 @@ public class EventFactory extends SimpleListenerHost {
                     if (sp.length == 3) {
                         boolean success = false;
 
-                        for (Value val : value.valuesList) {
+                        for (ValueBase val : value.valuesList) {
                             if (val.getKey().equals(sp[1])) {
                                 if (val instanceof BooleanValue) {
                                     if (sp[2].equalsIgnoreCase("true") || sp[2].equalsIgnoreCase("false")) {
@@ -207,7 +204,7 @@ public class EventFactory extends SimpleListenerHost {
                         if (sp[2].equals("del")) {
                             boolean succ = false;
 
-                            for (Value v : value.valuesList) {
+                            for (ValueBase v : value.valuesList) {
                                 if (v instanceof MultiMapValue) {
                                     MultiMapValue mmv = (MultiMapValue) v;
                                     if (mmv.getKey().equals(sp[1])) {
@@ -233,7 +230,7 @@ public class EventFactory extends SimpleListenerHost {
                     } else if (sp.length == 5) {
                         if (sp[2].equals("add")) {
                             boolean succ = false;
-                            for (Value v : value.valuesList) {
+                            for (ValueBase v : value.valuesList) {
                                 if (v instanceof MultiMapValue) {
                                     MultiMapValue mmv = (MultiMapValue) v;
                                     if (mmv.getKey().equals(sp[1])) {
@@ -309,7 +306,7 @@ public class EventFactory extends SimpleListenerHost {
                             StringBuilder sb = new StringBuilder();
                             sb.append(sp[1]).append(" 的群设定:\n");
 
-                            for (Value v : INSTANCE.values.get(Long.parseLong(sp[1])).valuesList) {
+                            for (ValueBase v : INSTANCE.values.get(Long.parseLong(sp[1])).valuesList) {
                                 sb.append(v.getKey()).append(" - ").append((v instanceof MultiBooleanValue || v instanceof MultiMapValue || v instanceof MultiStringValue) ? "不支持显示" : v.getValue()).append("\n");
                             }
 

@@ -1,6 +1,6 @@
 package me.yarukon.value;
 
-public class Value {
+public class ValueBase {
     protected String key;
     protected Object value;
 

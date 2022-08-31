@@ -1,7 +1,6 @@
 package me.yarukon.thread.impl;
 
-import me.yarukon.EventFactory;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.node.Node;
 import me.yarukon.node.NodeManager;
 import me.yarukon.node.impl.DateNode;

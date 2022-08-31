@@ -3,7 +3,7 @@ package me.yarukon.thread.impl;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.yarukon.BotMain;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.GenshinQueryUtil;
 import net.mamoe.mirai.contact.Group;

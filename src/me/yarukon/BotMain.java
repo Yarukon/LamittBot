@@ -4,11 +4,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
+import me.yarukon.thread.UpdateThread;
+import me.yarukon.utils.WebsocketClient;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.value.*;
+import me.yarukon.value.impl.*;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
@@ -136,7 +138,7 @@ public class BotMain extends JavaPlugin {
                 e.printStackTrace();
             }
 
-            new Yarukon();
+            new UpdateThread(60).start();
         }
     }
 
@@ -197,7 +199,7 @@ public class BotMain extends JavaPlugin {
                     JsonObject group = groups.get(i).getAsJsonObject();
                     Values vals = new Values(group.get("GroupID").getAsLong());
 
-                    for(Value val : vals.valuesList) {
+                    for(ValueBase val : vals.valuesList) {
                         if(group.has(val.getKey())) {
                             if(val instanceof BooleanValue) {
                                 val.setValue(group.get(val.getKey()).getAsBoolean());
@@ -261,7 +263,7 @@ public class BotMain extends JavaPlugin {
             for(Map.Entry<Long, Values> entry : this.values.entrySet()) {
                 JsonObject group = new JsonObject();
                 group.addProperty("GroupID", entry.getKey());
-                for(Value val : entry.getValue().valuesList) {
+                for(ValueBase val : entry.getValue().valuesList) {
                     if(val instanceof BooleanValue) {
                         group.addProperty(val.getKey(), ((BooleanValue) val).getValue());
                     } else if(val instanceof StringValue) {

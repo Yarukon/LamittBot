@@ -1,4 +1,4 @@
-package me.yarukon;
+package me.yarukon.utils.json;
 
 public class HuntInfo {
     public String dataCenter;

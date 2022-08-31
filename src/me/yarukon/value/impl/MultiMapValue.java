@@ -1,13 +1,15 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
+
+import me.yarukon.value.ValueBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class MultiMapValue extends Value {
+public class MultiMapValue extends ValueBase {
     private final LinkedHashMap<String, Keypair> values = new LinkedHashMap<>();
 
-    public MultiMapValue(String key, ArrayList<Value> targetList) {
+    public MultiMapValue(String key, ArrayList<ValueBase> targetList) {
         this.key = key;
         targetList.add(this);
     }

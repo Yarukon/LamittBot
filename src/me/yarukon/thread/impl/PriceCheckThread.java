@@ -1,8 +1,8 @@
 package me.yarukon.thread.impl;
 
 import me.yarukon.BotMain;
-import me.yarukon.UniversalisJson;
-import me.yarukon.Values;
+import me.yarukon.utils.json.UniversalisJson;
+import me.yarukon.value.Values;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.BotUtils;
 import me.yarukon.utils.FFXIVUtil;

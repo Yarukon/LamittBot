@@ -1,12 +1,12 @@
-package me.yarukon;
+package me.yarukon.value;
 
-import me.yarukon.value.*;
+import me.yarukon.value.impl.*;
 
 import java.util.ArrayList;
 
 public class Values {
     public long groupID;
-    public ArrayList<Value> valuesList = new ArrayList<>();
+    public ArrayList<ValueBase> valuesList = new ArrayList<>();
 
     //起源服务器信息查询 (一般用于GMOD)
     public BooleanValue enableSSI = new BooleanValue("SSIEnabled", false, valuesList);

@@ -2,7 +2,7 @@ package me.yarukon.command;
 
 import me.yarukon.BotMain;
 import me.yarukon.EventFactory;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.command.impl.*;
 import me.yarukon.command.impl.pChat.*;
 import net.mamoe.mirai.contact.Friend;

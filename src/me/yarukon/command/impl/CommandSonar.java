@@ -1,9 +1,9 @@
 package me.yarukon.command.impl;
 
 import me.yarukon.BotMain;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.command.Command;
-import me.yarukon.value.MultiBoolean;
+import me.yarukon.value.impl.MultiBoolean;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;

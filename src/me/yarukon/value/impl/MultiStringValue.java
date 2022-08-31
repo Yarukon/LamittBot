@@ -1,12 +1,14 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
+
+import me.yarukon.value.ValueBase;
 
 import java.util.ArrayList;
 
-public class MultiStringValue extends Value {
+public class MultiStringValue extends ValueBase {
 
     private final ArrayList<String> values = new ArrayList<>();
 
-    public MultiStringValue(String key, ArrayList<Value> targetList) {
+    public MultiStringValue(String key, ArrayList<ValueBase> targetList) {
         this.key = key;
         targetList.add(this);
     }

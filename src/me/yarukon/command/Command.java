@@ -1,6 +1,6 @@
 package me.yarukon.command;
 
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;

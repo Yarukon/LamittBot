@@ -3,7 +3,7 @@ package me.yarukon.command.impl;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.yarukon.BotMain;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import me.yarukon.command.Command;
 import me.yarukon.command.CommandType;
 import me.yarukon.node.NodeManager;

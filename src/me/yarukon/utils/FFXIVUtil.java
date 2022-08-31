@@ -1,7 +1,7 @@
 package me.yarukon.utils;
 
 import me.yarukon.BotMain;
-import me.yarukon.UniversalisJson;
+import me.yarukon.utils.json.UniversalisJson;
 import me.yarukon.utils.image.Element;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.utils.image.impl.LineElement;

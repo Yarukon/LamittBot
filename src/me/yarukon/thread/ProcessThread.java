@@ -1,7 +1,7 @@
 package me.yarukon.thread;
 
 import me.yarukon.EventFactory;
-import me.yarukon.Values;
+import me.yarukon.value.Values;
 import net.mamoe.mirai.contact.Group;
 
 public class ProcessThread extends Thread {

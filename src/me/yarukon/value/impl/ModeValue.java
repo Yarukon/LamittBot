@@ -1,12 +1,14 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
+
+import me.yarukon.value.ValueBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModeValue extends Value {
+public class ModeValue extends ValueBase {
     public ArrayList<String> modes = new ArrayList<>();
 
-    public ModeValue(String key, String defaultMode, ArrayList<Value> targetList, String... modes) {
+    public ModeValue(String key, String defaultMode, ArrayList<ValueBase> targetList, String... modes) {
         this.key = key;
         this.value = defaultMode;
         this.modes.addAll(Arrays.asList(modes));

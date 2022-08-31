@@ -1,7 +1,8 @@
-package me.yarukon;
+package me.yarukon.utils;
 
-import com.google.gson.Gson;
+import me.yarukon.BotMain;
 import me.yarukon.utils.BotUtils;
+import me.yarukon.utils.json.HuntInfo;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

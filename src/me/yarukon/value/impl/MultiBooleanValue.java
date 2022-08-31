@@ -1,18 +1,15 @@
-package me.yarukon.value;
+package me.yarukon.value.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.apache.commons.lang3.StringUtils;
+import me.yarukon.value.ValueBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-public class MultiBooleanValue extends Value {
+public class MultiBooleanValue extends ValueBase {
     private final LinkedHashMap<String, MultiBoolean> values = new LinkedHashMap<>();
 
-    public MultiBooleanValue(String key, ArrayList<Value> targetList, MultiBoolean... multiBooleans) {
+    public MultiBooleanValue(String key, ArrayList<ValueBase> targetList, MultiBoolean... multiBooleans) {
         this.key = key;
 
         for(MultiBoolean mb : multiBooleans) {
