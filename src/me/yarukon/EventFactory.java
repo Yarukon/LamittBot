@@ -298,29 +298,6 @@ public class EventFactory extends SimpleListenerHost {
                     api.sendMessage("用法: .发送消息 <群号> <消息>");
                 }
             }
-
-            if (msg.startsWith(".变量列表")) {
-                if (sp.length == 2) {
-                    if (StringUtils.isNumeric(sp[1]) && Long.parseLong(sp[1]) > 0) {
-                        if (INSTANCE.values.containsKey(Long.parseLong(sp[1]))) {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append(sp[1]).append(" 的群设定:\n");
-
-                            for (ValueBase v : INSTANCE.values.get(Long.parseLong(sp[1])).valuesList) {
-                                sb.append(v.getKey()).append(" - ").append((v instanceof MultiBooleanValue || v instanceof MultiMapValue || v instanceof MultiStringValue) ? "不支持显示" : v.getValue()).append("\n");
-                            }
-
-                            api.sendMessage(sb.toString());
-                        } else {
-                            api.sendMessage("失败: 指定的群不存在!");
-                        }
-                    } else {
-                        api.sendMessage("参数有误, 请检查!");
-                    }
-                } else {
-                    api.sendMessage("参数有误, 请检查!");
-                }
-            }
         }
     }
 

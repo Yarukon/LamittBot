@@ -41,6 +41,17 @@ public class CommandManager {
     }
 
     public void addCommand(Command cmd) {
+        boolean duplicated = false;
+        for (Command c : commands) {
+            if (c.getName().equals(cmd.getName())) {
+                duplicated = true;
+                break;
+            }
+        }
+
+        if (duplicated)
+            return;
+
         commands.add(cmd);
     }
 
