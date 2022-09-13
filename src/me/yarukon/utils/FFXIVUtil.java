@@ -66,10 +66,10 @@ public class FFXIVUtil {
             elements.add(itemCountAndPrice);
             elements.add(retainer);
 
-            int startY = 80;
+            int startY = 85;
             for(UniversalisJson.UniversalisListingJson jj : jsonIn.listings) {
                 elements.add(new UniversalisItemElement(30, startY, 740, 30, 5, jj.hq, jj.quantity + "x " + jj.pricePerUnit, jj.total + "", jj.retainerName, jj.worldName));
-                startY += 25;
+                startY += 35;
             }
 
             stream = new ByteArrayOutputStream();
