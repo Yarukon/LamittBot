@@ -22,7 +22,7 @@ public class LineElement extends Element {
 		
 		g.setColor(new Color(255, 255, 255, 175));
 		g.setFont(ImageUtils.font4);
-		Rectangle2D textBound = ImageUtils.font1.getStringBounds(text, g.getFontRenderContext());
+		Rectangle2D textBound = ImageUtils.font4.getStringBounds(text, g.getFontRenderContext());
 		g.drawString(text, (int) (x + (width / 2) - (textBound.getWidth() / 2)), y);
 	}
 

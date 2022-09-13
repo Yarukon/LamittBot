@@ -1,11 +1,12 @@
 package me.yarukon.utils;
 
 import me.yarukon.BotMain;
+import me.yarukon.utils.image.impl.TextElement;
+import me.yarukon.utils.image.impl.UniversalisItemElement;
 import me.yarukon.utils.json.UniversalisJson;
 import me.yarukon.utils.image.Element;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.utils.image.impl.LineElement;
-import me.yarukon.utils.image.impl.LineHeadElement;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -55,9 +56,9 @@ public class FFXIVUtil {
         try {
             LineElement head = new LineElement(5, 25, 800, 30, 5, "物品名称: " + itemName + (isHQ ? " (HQ)" : "") + " 大区/服务器: " + zoneOrWorld);
             LineElement head2 = new LineElement(5, 50, 800, 30, 5, "最后更新: " + sdf.format(new Timestamp(jsonIn.lastUploadTime)));
-            LineHeadElement hqText = new LineHeadElement(30, 75, 30, 20, 5, "高品质");
-            LineHeadElement itemCountAndPrice = new LineHeadElement(140, 75, 30, 20, 5, "数量/价格");
-            LineHeadElement retainer = new LineHeadElement(500, 75, 30, 20, 5, "雇员名称");
+            TextElement hqText = new TextElement(30, 75, 30, 20, 5, "HQ", ImageUtils.font4);
+            TextElement itemCountAndPrice = new TextElement(100, 76, 30, 20, 5, "数量/价格", ImageUtils.font4);
+            TextElement retainer = new TextElement(500, 76, 30, 20, 5, "雇员名称", ImageUtils.font4);
             ArrayList<Element> elements = new ArrayList<>();
             elements.add(head);
             elements.add(head2);
@@ -65,11 +66,9 @@ public class FFXIVUtil {
             elements.add(itemCountAndPrice);
             elements.add(retainer);
 
-            int startY = 100;
+            int startY = 80;
             for(UniversalisJson.UniversalisListingJson jj : jsonIn.listings) {
-                elements.add(new LineHeadElement(73, startY, 30, 20, 5, jj.hq ? "Y" : "N"));
-                elements.add(new LineHeadElement(140, startY, 30, 20, 5, jj.quantity + "x " + jj.pricePerUnit + " (共" + jj.total + ")"));
-                elements.add(new LineHeadElement(500, startY, 30, 20, 5, jj.retainerName + (jj.worldName != null ? " @ " + jj.worldName : "")));
+                elements.add(new UniversalisItemElement(30, startY, 740, 30, 5, jj.hq, jj.quantity + "x " + jj.pricePerUnit, jj.total + "", jj.retainerName, jj.worldName));
                 startY += 25;
             }
 

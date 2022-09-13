@@ -23,6 +23,7 @@ public class ImageUtils {
 	public static Font font2;
 	public static Font font3;
 	public static Font font4;
+	public static Font gamesym;
 	public static HashMap<String, Image> images = new HashMap<>();
 
 	public void init(MiraiLogger logger) {
@@ -37,6 +38,7 @@ public class ImageUtils {
 		font2 = getFont("DatFont", 18, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font3 = getFont("DatFont", 14, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font4 = getFont("siyuan", 20, true, BotMain.INSTANCE.extResources.getAbsolutePath());
+		gamesym = getFont("gamesym", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
 	}
 
 	public ByteArrayOutputStream generateStatImage(long id, JsonObject obj) throws Exception {
@@ -72,8 +74,8 @@ public class ImageUtils {
 			int lastY = 0;
 			for(Element ele : elements) {
 				if(ele.y >= lastY) {
-					height += (ele.y - lastY) + ele.space;
-					lastY = ele.y + ele.space;
+					height += (ele.y - lastY) + ele.space + ele.height;
+					lastY = ele.y + ele.space + ele.height;
 				}
 			}
 		}
