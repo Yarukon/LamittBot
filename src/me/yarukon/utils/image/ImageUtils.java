@@ -69,11 +69,12 @@ public class ImageUtils {
 		int height = autoCalcHeight ? 0 : h;
 
 		if(autoCalcHeight) {
-			height += 5;
+			Element first = elements.get(0);
+			int lastY = first.y;
+			height += first.height + first.space;
 
-			int lastY = 0;
 			for(Element ele : elements) {
-				if(ele.y >= lastY) {
+				if(ele.y != lastY) {
 					height += (ele.y - lastY) + ele.space + ele.height;
 					lastY = ele.y + ele.space + ele.height;
 				}
