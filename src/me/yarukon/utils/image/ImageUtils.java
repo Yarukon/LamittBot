@@ -69,10 +69,7 @@ public class ImageUtils {
 		int height = autoCalcHeight ? 0 : h;
 
 		if(autoCalcHeight) {
-			Element first = elements.get(0);
-			int lastY = first.y;
-			height += first.height + first.space;
-
+			int lastY = 0;
 			for(Element ele : elements) {
 				if(ele.y != lastY) {
 					height += (ele.y - lastY) + ele.space + ele.height;
@@ -85,6 +82,10 @@ public class ImageUtils {
 	}
 
 	public static void createImage(int w, int h, boolean autoCalcHeight, ArrayList<Element> elements, ByteArrayOutputStream out) throws Exception {
+		createImage(w, h, autoCalcHeight, elements, out, "png");
+	}
+
+	public static void createImage(int w, int h, boolean autoCalcHeight, ArrayList<Element> elements, ByteArrayOutputStream out, String format) throws Exception {
 		int[] arr = getWidthAndHeight(elements, w, h, autoCalcHeight);
 		int width = arr[0];
 		int height = arr[1];
@@ -105,7 +106,7 @@ public class ImageUtils {
 		}
 
 		g.dispose();
-		ImageIO.write(image, "png", out);
+		ImageIO.write(image, format, out);
 	}
 
 	public void cacheImage(String path, String type, MiraiLogger logger) {

@@ -73,7 +73,7 @@ public class FFXIVUtil {
             }
 
             stream = new ByteArrayOutputStream();
-            ImageUtils.createImage(800, 0, true, elements, stream);
+            ImageUtils.createImage(800, 0, true, elements, stream, "jpg");
         } catch(Exception ex) {
             ex.printStackTrace();
         }
