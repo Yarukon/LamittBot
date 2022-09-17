@@ -71,9 +71,9 @@ public class ImageUtils {
 		if(autoCalcHeight) {
 			int lastY = 0;
 			for(Element ele : elements) {
-				if(ele.y != lastY) {
-					height += (ele.y - lastY) + ele.space + ele.height;
-					lastY = ele.y + ele.space + ele.height;
+				if((ele.y + ele.height + ele.space) != lastY) {
+					height += (ele.y - lastY) + ele.height + ele.space;
+					lastY = ele.y + ele.height + ele.space;
 				}
 			}
 		}
