@@ -79,6 +79,10 @@ public abstract class Command {
         group.sendMessage(this.getUsage());
     }
 
+    public void sendUsage(Friend friend) {
+        friend.sendMessage(this.getUsage());
+    }
+
     public boolean isCommandUsable(Values values) {
         return true;
     }

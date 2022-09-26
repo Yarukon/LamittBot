@@ -33,6 +33,7 @@ public class CommandManager {
         addCommand(new CommandDelGroup());
         addCommand(new CommandGroupList());
         addCommand(new CommandQueueClear());
+        addCommand(new CommandRemoteChat());
         addCommand(new CommandJoinedGroupList());
 
         // 两者
