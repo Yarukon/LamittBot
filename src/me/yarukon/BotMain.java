@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.yarukon.command.CommandManager;
+import me.yarukon.ffxivQuests.FFXIVQuestManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.thread.UpdateThread;
 import me.yarukon.utils.WebsocketClient;
@@ -124,6 +125,12 @@ public class BotMain extends JavaPlugin {
         this.autoReplyPath = Paths.get(extResources.getAbsolutePath(), "replys.json").toFile();
         try {
             new NodeManager((JsonObject) JsonParser.parseString(FileUtils.readFileToString(this.autoReplyPath, StandardCharsets.UTF_8)));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            new FFXIVQuestManager();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

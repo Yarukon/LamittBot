@@ -35,6 +35,8 @@ public class Values {
     // 自动回复
     public BooleanValue autoReply = new BooleanValue("AutoReply", false, valuesList);
 
+    public BooleanValue ffxivQuest = new BooleanValue("FFXIVQuest", false, valuesList);
+
     public Values(long groupID) {
         this.groupID = groupID;
     }

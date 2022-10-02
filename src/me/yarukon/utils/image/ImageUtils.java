@@ -23,6 +23,7 @@ public class ImageUtils {
 	public static Font font2;
 	public static Font font3;
 	public static Font font4;
+	public static Font font5;
 	public static Font gamesym;
 	public static HashMap<String, Image> images = new HashMap<>();
 
@@ -38,6 +39,7 @@ public class ImageUtils {
 		font2 = getFont("DatFont", 18, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font3 = getFont("DatFont", 14, BotMain.INSTANCE.extResources.getAbsolutePath());
 		font4 = getFont("siyuan", 20, true, BotMain.INSTANCE.extResources.getAbsolutePath());
+		font5 = getFont("siyuan", 16, true, BotMain.INSTANCE.extResources.getAbsolutePath());
 		gamesym = getFont("gamesym", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
 	}
 
