@@ -22,7 +22,6 @@ public class FFXIVQuestElement extends Element {
 	@Override
 	public void doDraw(Graphics2D g) {
 		g.setColor(new Color(255, 255, 255));
-		g.drawRect(x, y, width - 1, height - 1);
 
 		g.setFont(ImageUtils.font4);
 		g.drawString(result.missionName, 65, 30);
