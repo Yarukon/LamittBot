@@ -10,7 +10,6 @@ import me.yarukon.value.Values;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
-import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
@@ -48,9 +47,9 @@ public class CommandFFXIVQuests extends Command {
 
                 try {
                     if (image != null) {
-                        group.sendMessage(new MessageChainBuilder().append(image).append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
+                        group.sendMessage(new MessageChainBuilder().append(image).append("\n").append("https://ff14.huijiwiki.com/wiki/").append(URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
                     } else {
-                        group.sendMessage(new MessageChainBuilder().append("生成照片失败").append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
+                        group.sendMessage(new MessageChainBuilder().append("生成照片失败").append("\n").append("https://ff14.huijiwiki.com/wiki/").append(URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
                     }
                 } catch (Exception ignored) {}
             } else {
