@@ -48,13 +48,13 @@ public class CommandFFXIVQuests extends Command {
 
                 try {
                     if (image != null) {
-                        group.sendMessage(new MessageChainBuilder().append(new At(sender.getId())).append("\n").append(image).append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
+                        group.sendMessage(new MessageChainBuilder().append(image).append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
                     } else {
-                        group.sendMessage(new MessageChainBuilder().append(new At(sender.getId())).append("\n").append("生成照片失败").append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
+                        group.sendMessage(new MessageChainBuilder().append("生成照片失败").append("\n").append("https://ff14.huijiwiki.com/wiki/" + URLEncoder.encode("任务:" + result.missionName, "UTF-8")).asMessageChain());
                     }
                 } catch (Exception ignored) {}
             } else {
-                group.sendMessage(new MessageChainBuilder().append(new At(sender.getId())).append("\n").append("找不到对应的任务 ").append(args[0]).asMessageChain());
+                group.sendMessage(new MessageChainBuilder().append("找不到对应的任务 ").append(args[0]).asMessageChain());
             }
         } else {
             this.sendUsage(group);
