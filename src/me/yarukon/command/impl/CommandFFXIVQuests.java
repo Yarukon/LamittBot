@@ -53,7 +53,7 @@ public class CommandFFXIVQuests extends Command {
                     }
                 } catch (Exception ignored) {}
             } else {
-                group.sendMessage(new MessageChainBuilder().append("找不到对应的任务 ").append(args[0]).asMessageChain());
+                group.sendMessage(new MessageChainBuilder().append("找不到对应的任务 ").append(args[0]).append("\n注意, 目前只支持查询主线任务, 且仅主线任务有进度标识").asMessageChain());
             }
         } else {
             this.sendUsage(group);
