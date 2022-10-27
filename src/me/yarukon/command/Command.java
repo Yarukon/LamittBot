@@ -18,11 +18,11 @@ public abstract class Command {
     private String usage;
 
     public Command(String name) {
-        this(name, "未设置帮助信息");
+        this(name, "");
     }
 
     public Command(String name, CommandType type) {
-        this(name, "未设置帮助信息", type);
+        this(name, "", type);
     }
 
     public Command(String name, String helpMessage) {
