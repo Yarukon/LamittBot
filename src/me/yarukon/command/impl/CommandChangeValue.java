@@ -26,7 +26,7 @@ public class CommandChangeValue extends Command {
                 if (val.getKey().equals(args[0])) {
                     if (val instanceof BooleanValue) {
                         if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
-                            val.setValue(Boolean.parseBoolean(args[2].toLowerCase()));
+                            val.setValue(Boolean.parseBoolean(args[1].toLowerCase()));
                             group.sendMessage("成功: " + val.getKey() + " 的值设置为 " + val.getValue());
                         } else {
                             group.sendMessage("请输入正确的布尔值 (true 或 false)!");
