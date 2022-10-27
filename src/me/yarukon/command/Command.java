@@ -56,7 +56,7 @@ public abstract class Command {
     }
 
     public String getHelpMessage() {
-        return helpMessage;
+        return helpMessage == null || helpMessage.isEmpty() ? "没有描述" : helpMessage;
     }
 
     public void setUsage(String usage) {

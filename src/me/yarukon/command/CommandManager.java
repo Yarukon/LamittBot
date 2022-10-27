@@ -26,7 +26,9 @@ public class CommandManager {
         addCommand(new CommandDXX());
         addCommand(new CommandMItem());
         addCommand(new CommandSonar());
+        addCommand(new CommandConfigList());
         addCommand(new CommandFFXIVQuests());
+        addCommand(new CommandChangeValue());
         addCommand(new CommandGenshinQuery());
 
         // 私聊指令
