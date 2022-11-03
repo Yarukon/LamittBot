@@ -77,10 +77,10 @@ public class FFXIVUtil {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-    public static ByteArrayOutputStream genImage(String itemName, boolean isHQ, String zoneOrWorld, UniversalisJson jsonIn) {
+    public static ByteArrayOutputStream genImage(String itemName, boolean isHQ, boolean onlyNQ, String zoneOrWorld, UniversalisJson jsonIn) {
         ByteArrayOutputStream stream = null;
         try {
-            LineElement head = new LineElement(5, 25, 800, 30, 5, "物品名称: " + itemName + (isHQ ? " (HQ)" : "") + " 大区/服务器: " + zoneOrWorld);
+            LineElement head = new LineElement(5, 25, 800, 30, 5, "物品名称: " + itemName + (isHQ ? " (HQ)" : onlyNQ ?  " (仅NQ)" : "") + " 大区/服务器: " + zoneOrWorld);
             LineElement head2 = new LineElement(5, 50, 800, 30, 5, "最后更新: " + sdf.format(new Timestamp(jsonIn.lastUploadTime)));
             TextElement hqText = new TextElement(30, 75, 30, 20, 5, "HQ", ImageUtils.font4);
             TextElement itemCountAndPrice = new TextElement(100, 76, 30, 20, 5, "数量/价格", ImageUtils.font4);

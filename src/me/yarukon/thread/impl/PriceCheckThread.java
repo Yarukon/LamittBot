@@ -57,7 +57,7 @@ public class PriceCheckThread extends ProcessThread {
                 String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : onlyNQ ? "&hq=false" : ""));
                 UniversalisJson json = BotUtils.gson.fromJson(result, UniversalisJson.class);
                 if (json.itemID != 0) {
-                    ByteArrayOutputStream stream = FFXIVUtil.genImage(itemName, isHQ, zoneOrWorld, json);
+                    ByteArrayOutputStream stream = FFXIVUtil.genImage(itemName, isHQ, onlyNQ, zoneOrWorld, json);
                     if (stream != null) {
                         ByteArrayInputStream inStream = new ByteArrayInputStream(stream.toByteArray());
                         ExternalResource extRes = ExternalResource.create(inStream);
