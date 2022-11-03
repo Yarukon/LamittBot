@@ -165,7 +165,7 @@ public class EventFactory extends SimpleListenerHost {
                         Image image = null;
                         if (!huntInfo.isDead && BotMain.INSTANCE.huntMap.containsKey(huntInfo.mapPath)) {
                             ByteArrayOutputStream os = new ByteArrayOutputStream();
-                            ImageIO.write(getHuntPosition(BotMain.INSTANCE.huntMap.get(huntInfo.mapPath), huntInfo.x, huntInfo.y, 1f, 1024), "jpg", os);
+                            ImageIO.write(FFXIVUtil.getHuntPosition(BotMain.INSTANCE.huntMap.get(huntInfo.mapPath), huntInfo.x, huntInfo.y, 1f, 1024), "jpg", os);
                             InputStream is = new ByteArrayInputStream(os.toByteArray());
                             ExternalResource res = ExternalResource.create(is);
                             image = g.uploadImage(res);
@@ -190,28 +190,5 @@ public class EventFactory extends SimpleListenerHost {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    private final Rectangle2D theBox = new Rectangle2D.Float();
-
-    public BufferedImage getHuntPosition(BufferedImage imageIn, float xPos, float yPos, float scale, int resolution) {
-        BufferedImage imgCopy = FFXIVUtil.deepCopy(imageIn);
-        Graphics2D g = imgCopy.createGraphics();
-
-        if (BotMain.INSTANCE.redFlagImage != null) {
-            AffineTransform affTransform = new AffineTransform();
-            g.setColor(new Color(255, 255, 255));
-            affTransform.translate(FFXIVUtil.flagToPixel(scale, xPos, resolution) - 16, FFXIVUtil.flagToPixel(scale, yPos, resolution) - 16);
-            affTransform.scale(1, 1);
-            g.drawImage(BotMain.INSTANCE.redFlagImage, affTransform, null);
-        } else {
-            g.setColor(new Color(0, 0, 255));
-            g.setStroke(new BasicStroke(10));
-            theBox.setFrame(FFXIVUtil.flagToPixel(scale, xPos, resolution) - 5, FFXIVUtil.flagToPixel(scale, yPos, resolution) - 5, 10, 10);
-            g.draw(theBox);
-        }
-
-        g.dispose();
-        return imgCopy;
     }
 }

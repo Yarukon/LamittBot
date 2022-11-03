@@ -8,6 +8,9 @@ import me.yarukon.utils.image.Element;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.utils.image.impl.LineElement;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
@@ -47,6 +50,29 @@ public class FFXIVUtil {
         }
 
         return false;
+    }
+
+    private static final Rectangle2D theBox = new Rectangle2D.Float();
+
+    public static BufferedImage getHuntPosition(BufferedImage imageIn, float xPos, float yPos, float scale, int resolution) {
+        BufferedImage imgCopy = FFXIVUtil.deepCopy(imageIn);
+        Graphics2D g = imgCopy.createGraphics();
+
+        if (BotMain.INSTANCE.redFlagImage != null) {
+            AffineTransform affTransform = new AffineTransform();
+            g.setColor(new Color(255, 255, 255));
+            affTransform.translate(FFXIVUtil.flagToPixel(scale, xPos, resolution) - 16, FFXIVUtil.flagToPixel(scale, yPos, resolution) - 16);
+            affTransform.scale(1, 1);
+            g.drawImage(BotMain.INSTANCE.redFlagImage, affTransform, null);
+        } else {
+            g.setColor(new Color(0, 0, 255));
+            g.setStroke(new BasicStroke(10));
+            theBox.setFrame(FFXIVUtil.flagToPixel(scale, xPos, resolution) - 5, FFXIVUtil.flagToPixel(scale, yPos, resolution) - 5, 10, 10);
+            g.draw(theBox);
+        }
+
+        g.dispose();
+        return imgCopy;
     }
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

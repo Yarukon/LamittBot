@@ -34,10 +34,16 @@ public class PriceCheckThread extends ProcessThread {
     @Override
     public void action() throws Exception {
         boolean isHQ = false;
+        boolean onlyNQ = false;
         String dataCenterName = BotMain.INSTANCE.getDataCenterNameFromFriendlyName(zoneOrWorld);
         if (dataCenterName != null || BotMain.INSTANCE.isDataCenterExist(zoneOrWorld) || BotMain.INSTANCE.isZoneExist(zoneOrWorld)) {
             if (dataCenterName != null) {
                 this.zoneOrWorld = dataCenterName;
+            }
+
+            if (itemName.contains("NQ")) {
+                onlyNQ = true;
+                itemName = itemName.replace("NQ", "");
             }
 
             if (itemName.contains("HQ") || itemName.contains("高品质")) {
@@ -48,7 +54,7 @@ public class PriceCheckThread extends ProcessThread {
 
             if (FFXIVUtil.containsItem(itemName, nameLikeItems)) {
                 int itemID = BotMain.INSTANCE.itemIDs.get(itemName);
-                String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : ""));
+                String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : onlyNQ ? "&hq=false" : ""));
                 UniversalisJson json = BotUtils.gson.fromJson(result, UniversalisJson.class);
                 if (json.itemID != 0) {
                     ByteArrayOutputStream stream = FFXIVUtil.genImage(itemName, isHQ, zoneOrWorld, json);
