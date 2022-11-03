@@ -75,7 +75,7 @@ public class FFXIVUtil {
         return imgCopy;
     }
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     public static ByteArrayOutputStream genImage(String itemName, boolean isHQ, boolean onlyNQ, String zoneOrWorld, UniversalisJson jsonIn) {
         ByteArrayOutputStream stream = null;
