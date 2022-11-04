@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class UniversalisJson {
 	public int itemID;
 	public long lastUploadTime;
-	public ArrayList<UniversalisListingJson> listings;
+	public ArrayList<ListingJson> listings;
 	
-	public static class UniversalisListingJson {
+	public static class ListingJson {
 		public int pricePerUnit;
 		public int quantity;
 		public boolean hq;

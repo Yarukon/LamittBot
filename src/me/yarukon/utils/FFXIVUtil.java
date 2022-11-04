@@ -15,12 +15,25 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class FFXIVUtil {
+
+    private static final Rectangle2D theBox = new Rectangle2D.Float();
+    public static final String requestFields;
+    static {
+        try {
+            requestFields = URLEncoder.encode("itemID,lastUploadTime,listings.pricePerUnit,listings.quantity,listings.hq,listings.worldName,listings.retainerName,listings.total", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -51,8 +64,6 @@ public class FFXIVUtil {
 
         return false;
     }
-
-    private static final Rectangle2D theBox = new Rectangle2D.Float();
 
     public static BufferedImage getHuntPosition(BufferedImage imageIn, float xPos, float yPos, float scale, int resolution) {
         BufferedImage imgCopy = FFXIVUtil.deepCopy(imageIn);
@@ -93,7 +104,7 @@ public class FFXIVUtil {
             elements.add(retainer);
 
             int startY = 85;
-            for(UniversalisJson.UniversalisListingJson jj : jsonIn.listings) {
+            for(UniversalisJson.ListingJson jj : jsonIn.listings) {
                 elements.add(new UniversalisItemElement(30, startY, 740, 30, 5, jj.hq, jj.quantity + "x " + jj.pricePerUnit, jj.total + "", jj.retainerName, jj.worldName));
                 startY += 35;
             }

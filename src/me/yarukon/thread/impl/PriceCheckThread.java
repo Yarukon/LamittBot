@@ -54,7 +54,7 @@ public class PriceCheckThread extends ProcessThread {
 
             if (FFXIVUtil.containsItem(itemName, nameLikeItems)) {
                 int itemID = BotMain.INSTANCE.itemIDs.get(itemName);
-                String result = BotUtils.sendGet("https://universalis.app/api/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : onlyNQ ? "&hq=false" : ""));
+                String result = BotUtils.sendGet("https://universalis.app/api/v2/" + URLEncoder.encode(zoneOrWorld, "UTF-8") + "/" + itemID, "listings=" + listingAmount + (isHQ ? "&hq=true" : onlyNQ ? "&hq=false" : "") + "&fields=" + FFXIVUtil.requestFields);
                 UniversalisJson json = BotUtils.gson.fromJson(result, UniversalisJson.class);
                 if (json.itemID != 0) {
                     ByteArrayOutputStream stream = FFXIVUtil.genImage(itemName, isHQ, onlyNQ, zoneOrWorld, json);
