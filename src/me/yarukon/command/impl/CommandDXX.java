@@ -19,11 +19,7 @@ public class CommandDXX extends Command {
     @Override
     public void groupChat(String[] args, Group group, Member sender, MessageChain msgChain, String msg, Values value) {
         if (value.daXueXi.getValue()) {
-            if (args.length == 1) {
-                new DaXueXiThread(group, sender.getId(), value, args[0]).start();
-            } else {
-                this.sendUsage(group);
-            }
+            new DaXueXiThread(group, sender.getId(), value, args.length >= 1 ? args[0] : null).start();
         }
     }
 

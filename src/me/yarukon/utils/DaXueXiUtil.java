@@ -8,16 +8,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
 public class DaXueXiUtil {
     // 拿取大学习ID
-    public static void getIDs(Group groupIn) throws Exception {
+    public static LinkedHashMap<String, String> getIDs() throws Exception {
+        LinkedHashMap<String, String> temp = new LinkedHashMap<>();
+
         Document mainDoc = Jsoup.connect("https://news.cyol.com/gb/channels/vrGlAKDl/index.html").get();
         Element movieList = mainDoc.getElementsByClass("movie-list").first();
         Elements list = movieList.getElementsByTag("li");
-
-        StringBuilder sb = new StringBuilder();
 
         int size = 0;
         for (Element ele : list) {
@@ -28,16 +30,16 @@ public class DaXueXiUtil {
             id = id.substring(0, id.indexOf("/"));
             String date = ele.select("a").first().select("img").attr("data-src").replace("http://", "https://").replace("https://pic.cyol.com/img/", "");
             date = date.substring(0, date.indexOf("/"));
-            sb.append("青年大学习第 ").append(date).append(" 期 - ").append(id).append("\n");
+
+            temp.put(date, id);
 
             size++;
         }
 
-        MessageChain mc = new MessageChainBuilder().append("青年大学习ID列表:\n").append(sb.toString()).build();
-        groupIn.sendMessage(mc);
+        return temp;
     }
 
-    public static void getAnswer(String classID, Group groupIn) throws Exception {
+    public static String getAnswer(String classID) throws Exception {
         Document doc = Jsoup.connect("https://h5.cyol.com/special/daxuexi/" + classID + "/m.html").get();
         Elements eles = doc.getElementsByAttributeValueMatching("class", Pattern.compile("^section"));
 
@@ -73,7 +75,6 @@ public class DaXueXiUtil {
             }
         }
 
-        MessageChain mc = new MessageChainBuilder().append("青年大学习ID ").append(classID).append(" 答案:\n").append(sb.toString()).build();
-        groupIn.sendMessage(mc);
+        return sb.toString();
     }
 }
