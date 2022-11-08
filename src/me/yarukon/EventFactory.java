@@ -13,10 +13,7 @@ import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
-import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.event.events.NewFriendRequestEvent;
+import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
@@ -76,6 +73,9 @@ public class EventFactory extends SimpleListenerHost {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        BotMain.totalReceive++;
+        BotMain.receiveInOneMinTemp++;
     }
 
     @EventHandler
@@ -94,6 +94,12 @@ public class EventFactory extends SimpleListenerHost {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @EventHandler
+    public void onPostSendMessage(FriendMessagePostSendEvent evt) {
+        BotMain.totalSend++;
+        BotMain.sendInOneMinTemp++;
     }
 
     @EventHandler

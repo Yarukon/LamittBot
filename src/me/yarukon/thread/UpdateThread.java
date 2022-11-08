@@ -53,6 +53,9 @@ public class UpdateThread extends Thread {
     public TimeHelper timeHelper = new TimeHelper();
     public TimeHelper connectionCheckTimer = new TimeHelper();
 
+    public TimeHelper receiveAndSendMsgTimer = new TimeHelper();
+    public TimeHelper cpuLoadUpdateTimer = new TimeHelper();
+
     public void onUpdate() {
         if (timeHelper.delay(1500, true) && BotMain.INSTANCE.wsClient != null && BotMain.INSTANCE.wsClient.isOpen() && !BotMain.INSTANCE.wsClient.isClosed()) {
             BotMain.INSTANCE.wsClient.send("Websocket Keep-Alive");
@@ -66,6 +69,19 @@ public class UpdateThread extends Thread {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        if (cpuLoadUpdateTimer.delay(1000, true)) {
+            BotMain.INSTANCE.cpuLoad = BotMain.INSTANCE.cpu.getSystemCpuLoadBetweenTicks(BotMain.INSTANCE.prevTicks) * 100;
+            BotMain.INSTANCE.prevTicks = BotMain.INSTANCE.cpu.getSystemCpuLoadTicks();
+        }
+
+        if (receiveAndSendMsgTimer.delay(60000, true)) {
+            BotMain.receiveInOneMin = BotMain.receiveInOneMinTemp;
+            BotMain.sendInOneMin = BotMain.sendInOneMinTemp;
+
+            BotMain.receiveInOneMinTemp = 0;
+            BotMain.sendInOneMinTemp = 0;
         }
     }
 }

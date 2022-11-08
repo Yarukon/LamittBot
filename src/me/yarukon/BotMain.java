@@ -16,6 +16,9 @@ import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import org.apache.commons.io.FileUtils;
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.HardwareAbstractionLayer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -54,6 +57,8 @@ public class BotMain extends JavaPlugin {
     // 自动回复节点
     public File autoReplyPath;
 
+    public static final String PLUGIN_VERSION = "1.4 Build-221108";
+
     public BotMain() {
         super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Venti Bot").build());
     }
@@ -67,6 +72,24 @@ public class BotMain extends JavaPlugin {
     public final String[] allZoneName = new String[] {"水晶塔", "银泪湖", "太阳海岸", "伊修加德", "拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿", "延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园", "宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"};
 
     public CommandManager commandManager;
+
+    // Diagnostics
+    public static long startTimestamp = -1;
+    public static long totalReceive = 0;
+    public static long totalSend = 0;
+    public static long receiveInOneMin = 0;
+    public static long sendInOneMin = 0;
+
+    public static long receiveInOneMinTemp = 0;
+    public static long sendInOneMinTemp = 0;
+
+    public SystemInfo systemIn = new SystemInfo();
+    public HardwareAbstractionLayer hardware = systemIn.getHardware();
+
+    // CPU load
+    public CentralProcessor cpu = hardware.getProcessor();
+    public long[] prevTicks = new long[CentralProcessor.TickType.values().length];
+    public double cpuLoad = 0;
 
     @Override
     public void onEnable() {
@@ -146,6 +169,8 @@ public class BotMain extends JavaPlugin {
             }
 
             new UpdateThread(60).start();
+
+            startTimestamp = System.currentTimeMillis();
         }
     }
 

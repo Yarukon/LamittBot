@@ -41,6 +41,7 @@ public class CommandManager {
 
         // 两者
         addCommand(new CommandHelp());
+        addCommand(new CommandState());
         addCommand(new CommandReplyReload());
     }
 
