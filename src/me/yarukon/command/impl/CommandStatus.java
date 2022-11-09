@@ -12,9 +12,9 @@ import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.message.data.MessageChain;
 import oshi.util.FormatUtil;
 
-public class CommandState extends Command {
-    public CommandState() {
-        super("state", "显示Bot状态", CommandType.BOTH);
+public class CommandStatus extends Command {
+    public CommandStatus() {
+        super("status", "显示Bot状态", CommandType.BOTH);
         this.setOwnerOnly(true);
         this.setOwnerOnlyType(OwnerOnlyType.BOTH);
     }

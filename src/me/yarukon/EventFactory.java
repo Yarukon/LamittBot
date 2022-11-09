@@ -97,6 +97,12 @@ public class EventFactory extends SimpleListenerHost {
     }
 
     @EventHandler
+    public void onPostSendGroupMessage(GroupMessagePostSendEvent evt) {
+        BotMain.totalSend++;
+        BotMain.sendInOneMinTemp++;
+    }
+
+    @EventHandler
     public void onPostSendMessage(FriendMessagePostSendEvent evt) {
         BotMain.totalSend++;
         BotMain.sendInOneMinTemp++;
