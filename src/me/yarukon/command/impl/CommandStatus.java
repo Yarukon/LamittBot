@@ -35,9 +35,9 @@ public class CommandStatus extends Command {
         StringBuilder sb = new StringBuilder();
         sb.append("[Venti Bot] Version ").append(BotMain.PLUGIN_VERSION).append("\n"); // Version
         sb.append(b == null ? "Unknown" : b.getNick()).append(" (").append(BotMain.INSTANCE.targetBotQQ).append(")").append("\n"); // Bot name and QQ
-        sb.append("加入的群: ").append(b == null ? "-1" : b.getGroups().size()).append("个 已启用: ").append(BotMain.INSTANCE.values.size()).append(" 个").append("\n"); // Group size and enabled size
-        sb.append("接收信息: ").append(BotMain.receiveInOneMin).append("/min 总量: ").append(BotMain.totalReceive).append("\n"); // Received message in total
-        sb.append("发送信息: ").append(BotMain.sendInOneMin).append("/min 总量: ").append(BotMain.totalSend).append("\n"); // Sent message in total
+        sb.append("加入的群: ").append(b == null ? "-1" : b.getGroups().size()).append(" 个 已启用: ").append(BotMain.INSTANCE.values.size()).append(" 个").append("\n"); // Group size and enabled size
+        sb.append("接收信息: ").append(BotMain.receiveInOneMin).append("/m 总量: ").append(BotMain.totalReceive).append("\n"); // Received message in total
+        sb.append("发送信息: ").append(BotMain.sendInOneMin).append("/m 总量: ").append(BotMain.totalSend).append("\n"); // Sent message in total
 
         long passed = (System.currentTimeMillis() - BotMain.startTimestamp) / 1000;
         long h = passed / 3600;
