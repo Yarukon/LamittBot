@@ -15,6 +15,10 @@ public class BotUtils {
     public static String sendGet(String url, String param) throws Exception {
         URL obj = new URL(url + (param != null && !param.isEmpty() ? "?" + param : ""));
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setConnectTimeout(10000);
+        con.setReadTimeout(10000);
+
         con.setRequestMethod("GET"); // 请求方法为GET
 
         // Headers
