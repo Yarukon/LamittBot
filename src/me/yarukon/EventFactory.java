@@ -94,6 +94,9 @@ public class EventFactory extends SimpleListenerHost {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        BotMain.totalReceive++;
+        BotMain.receiveInOneMinTemp++;
     }
 
     @EventHandler
