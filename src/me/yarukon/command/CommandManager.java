@@ -32,6 +32,7 @@ public class CommandManager {
         addCommand(new CommandGenshinQuery());
 
         // 私聊指令
+        addCommand(new CommandGState());
         addCommand(new CommandAddGroup());
         addCommand(new CommandDelGroup());
         addCommand(new CommandGroupList());

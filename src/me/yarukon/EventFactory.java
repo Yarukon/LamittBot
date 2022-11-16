@@ -2,11 +2,12 @@ package me.yarukon;
 
 import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
-import me.yarukon.thread.impl.*;
+import me.yarukon.thread.impl.AutoReplyThread;
+import me.yarukon.thread.impl.MinecraftServerQueryThread;
+import me.yarukon.thread.impl.ValveServerQueryThread;
 import me.yarukon.utils.FFXIVUtil;
 import me.yarukon.utils.json.HuntInfo;
-import me.yarukon.value.*;
-import me.yarukon.value.impl.*;
+import me.yarukon.value.Values;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -18,12 +19,9 @@ import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -64,11 +62,13 @@ public class EventFactory extends SimpleListenerHost {
                 String msg = msgChain.contentToString();
                 Values v = INSTANCE.values.get(event.getGroup().getId());
 
-                if (msg.startsWith(CommandManager.PREFIX)) {
-                    BotMain.INSTANCE.commandManager.groupChatCommand(g, s, msgChain, msg, v);
-                }
+                if (v.enabled.getValueState()) {
+                    if (msg.startsWith(CommandManager.PREFIX)) {
+                        BotMain.INSTANCE.commandManager.groupChatCommand(g, s, msgChain, msg, v);
+                    }
 
-                this.onGroupCommand(g, g.getId(), s.getId(), msgChain, msg, v);
+                    this.onGroupCommand(g, g.getId(), s.getId(), msgChain, msg, v);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -162,6 +162,8 @@ public class EventFactory extends SimpleListenerHost {
             Bot b = Bot.getInstanceOrNull(BotMain.INSTANCE.targetBotQQ);
             if (b != null) {
                 for (Map.Entry<Long, Values> v : BotMain.INSTANCE.values.entrySet()) {
+                    if (!v.getValue().enabled.getValueState()) continue;
+
                     Group g = b.getGroup(v.getKey());
                     if (g == null) continue;
 

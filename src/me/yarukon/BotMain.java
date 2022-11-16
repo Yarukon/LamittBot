@@ -57,7 +57,7 @@ public class BotMain extends JavaPlugin {
     // 自动回复节点
     public File autoReplyPath;
 
-    public static final String PLUGIN_VERSION = "1.4 Build-221110";
+    public static final String PLUGIN_VERSION = "1.4 Build-221117";
 
     public BotMain() {
         super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Venti Bot").build());

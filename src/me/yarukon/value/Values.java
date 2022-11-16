@@ -8,6 +8,9 @@ public class Values {
     public long groupID;
     public ArrayList<ValueBase> valuesList = new ArrayList<>();
 
+    // 是否启用该群配置
+    public BooleanValue enabled = new BooleanValue("Enabled", true, valuesList);
+
     //起源服务器信息查询 (一般用于GMOD)
     public BooleanValue enableSSI = new BooleanValue("SSIEnabled", false, valuesList);
     public BooleanValue enableSSIPlyList = new BooleanValue("SSIEnablePlayerList", false, valuesList);
