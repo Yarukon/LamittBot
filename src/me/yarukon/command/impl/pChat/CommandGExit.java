@@ -22,7 +22,7 @@ public class CommandGExit extends Command {
 
     @Override
     public void privateChat(String[] args, Friend friend, String msg) {
-        if (args.length > 1) {
+        if (args.length >= 1) {
             try {
                 Bot bot = Bot.getInstanceOrNull(BotMain.INSTANCE.targetBotQQ);
                 if (bot != null) {
