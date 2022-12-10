@@ -37,7 +37,7 @@ public class CommandMap extends Command {
 
         @Override
         public void action() throws Exception {
-            SteamServerQuery query = new SteamServerQuery("43.248.185.86", 27099);
+            SteamServerQuery query = new SteamServerQuery("103.205.254.230", 27099);
             SteamServerInfo result = query.getInfo();
             if (result != null) {
                 MessageChain chain = new MessageChainBuilder().append(new At(api.getOrFail(qq).getId())).append("http://39.105.209.208:12249/zs/maps/").append(result.getMap()).append(".bsp.bz2").build();

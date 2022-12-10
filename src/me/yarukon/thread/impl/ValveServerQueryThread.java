@@ -36,7 +36,7 @@ public class ValveServerQueryThread extends ProcessThread {
             currentMap = result.getMap();
             currentVer = result.getVersion();
             serverEnv = result.getServerEnvironment();
-            currentPly = result.getPlayers() + "/" + result.getMaxPlayers();
+            currentPly = result.getPlayers() + "/" + Math.abs(result.getMaxPlayers());
             latency = result.getLatency() + "ms";
         } else if (query.getPlayer() != null) {
             name = "服务器返回的A2S数据无效!";

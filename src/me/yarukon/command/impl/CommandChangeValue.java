@@ -66,9 +66,13 @@ public class CommandChangeValue extends Command {
                             }
                         } else if (args.length >= 4 && args[1].equals("add")) {
                             if (mmv.hasKey(args[2])) {
-                                Keypair msv = mmv.getValue(mmv.getKey());
-                                msv.setValue(args[3]);
-                                group.sendMessage("修改: " + msv.key + " -> " + msv.getValue());
+                                Keypair msv = mmv.getValue(args[2]);
+                                if (msv != null) {
+                                    msv.setValue(args[3]);
+                                    group.sendMessage("修改: " + msv.key + " -> " + msv.getValue());
+                                } else {
+                                    group.sendMessage("错误: 获取的键值无效!");
+                                }
                             } else {
                                 Keypair msv = new Keypair(args[2], args[3]);
                                 mmv.addValue(args[2], msv);
