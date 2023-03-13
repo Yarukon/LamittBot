@@ -31,8 +31,6 @@ public class CommandManager {
         addCommand(new CommandChangeValue());
         addCommand(new CommandGenshinQuery());
 
-        addCommand(new CommandMap());
-
         // 私聊指令
         addCommand(new CommandGExit());
         addCommand(new CommandGState());

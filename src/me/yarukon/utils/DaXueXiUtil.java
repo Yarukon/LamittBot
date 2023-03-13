@@ -1,14 +1,10 @@
 package me.yarukon.utils;
 
-import net.mamoe.mirai.contact.Group;
-import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
@@ -28,8 +24,8 @@ public class DaXueXiUtil {
 
             String id = ele.select("a").first().attr("href").replace("http://", "https://").replace("https://h5.cyol.com/special/daxuexi/", "");
             id = id.substring(0, id.indexOf("/"));
-            String date = ele.select("a").first().select("img").attr("data-src").replace("http://", "https://").replace("https://pic.cyol.com/img/", "");
-            date = date.substring(0, date.indexOf("/"));
+            String date = ele.select("div").first().html();
+            date = date.substring(date.lastIndexOf(">") + 1, date.lastIndexOf(">") + 11);
 
             temp.put(date, id);
 
