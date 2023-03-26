@@ -78,6 +78,9 @@ public class CommandChangeValue extends Command {
                                 mmv.addValue(args[2], msv);
                                 group.sendMessage("添加: " + msv.key + " -> " + msv.getValue());
                             }
+                        } else if (args[1].equals("!clear")) {
+                            mmv.clearAll();
+                            group.sendMessage("清除了所有键值对!");
                         }
 
                         processed = true;

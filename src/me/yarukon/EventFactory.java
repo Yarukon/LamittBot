@@ -4,6 +4,7 @@ import me.yarukon.command.CommandManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.thread.impl.AutoReplyThread;
 import me.yarukon.thread.impl.MinecraftServerQueryThread;
+import me.yarukon.thread.impl.ValveServerBulkQueryThread;
 import me.yarukon.thread.impl.ValveServerQueryThread;
 import me.yarukon.utils.FFXIVUtil;
 import me.yarukon.utils.json.HuntInfo;
@@ -153,6 +154,10 @@ public class EventFactory extends SimpleListenerHost {
 
             if (value.minecraftStatQuery.getValue() && value.minecraftServerIP.hasKey(msg.substring(1))) {
                 new MinecraftServerQueryThread(api, qq, value, value.minecraftServerIP.getValue(msg.substring(1))).start();
+            }
+
+            if (value.enableSSI.getValue() && value.SSIServerBulkList.hasKey(msg.substring(1))) {
+                new ValveServerBulkQueryThread(api, qq, value, value.SSIServerBulkList.getValue(msg.substring(1))).start();
             }
         }
     }

@@ -16,6 +16,7 @@ public class Values {
     public BooleanValue enableSSIPlyList = new BooleanValue("SSIEnablePlayerList", false, valuesList);
 
     public MultiMapValue SSIServerList = new MultiMapValue("SSIServerList", valuesList);
+    public MultiMapValue SSIServerBulkList = new MultiMapValue("SSIServerBulkList", valuesList);
 
     //原神信息查询
     public BooleanValue genshinInfoQuery = new BooleanValue("GenshinInfoQuery", false, valuesList);

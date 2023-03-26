@@ -30,6 +30,10 @@ public class MultiMapValue extends ValueBase {
         return this.values.keySet().toArray(new String[0]);
     }
 
+    public void clearAll() {
+        values.clear();
+    }
+
     public void addValue(String key, Keypair value) {
         this.values.put(key, value);
     }

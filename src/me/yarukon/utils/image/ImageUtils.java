@@ -111,6 +111,17 @@ public class ImageUtils {
 		ImageIO.write(image, format, out);
 	}
 
+	public static ByteArrayInputStream createImageToInputStream(int w, int h, boolean autoCalcHeight, ArrayList<Element> elements, String format) throws Exception {
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+		ImageUtils.createImage(w, h, autoCalcHeight, elements, stream, format);
+
+		ByteArrayInputStream inStream = new ByteArrayInputStream(stream.toByteArray());
+		stream.close();
+
+		return inStream;
+	}
+
 	public void cacheImage(String path, String type, MiraiLogger logger) {
 		cacheImage(path, type, logger, false);
 	}
