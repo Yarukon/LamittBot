@@ -57,10 +57,10 @@ public class BotMain extends JavaPlugin {
     // 自动回复节点
     public File autoReplyPath;
 
-    public static final String PLUGIN_VERSION = "1.4 Build-230326";
+    public static final String PLUGIN_VERSION = "1.5 Build-230403";
 
     public BotMain() {
-        super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Venti Bot").build());
+        super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Lamitt Bot").build());
     }
 
     public EventFactory eventFactory;
@@ -99,7 +99,7 @@ public class BotMain extends JavaPlugin {
         commandManager = new CommandManager();
 
         values.clear();
-        this.getLogger().info("[Yarukon] Venti Bot 正在启动...");
+        this.getLogger().info("[Yarukon] Lamitt Bot 正在启动...");
 
         filePath = this.getConfigFolder().getAbsolutePath();
         extResources = new File(filePath + File.separator + "VentiBot" + File.separator + "resource");
