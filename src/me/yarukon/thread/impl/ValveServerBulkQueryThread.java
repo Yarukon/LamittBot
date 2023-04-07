@@ -1,5 +1,7 @@
 package me.yarukon.thread.impl;
 
+import com.sun.jna.platform.win32.WinGDI;
+import me.yarukon.BotMain;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.image.Element;
 import me.yarukon.utils.image.ImageUtils;
@@ -50,6 +52,10 @@ public class ValveServerBulkQueryThread extends ProcessThread {
                 currentMap = result.getMap();
                 currentPly = result.getPlayers() + " / " + Math.abs(result.getMaxPlayers());
                 latency = result.getLatency() + "ms";
+
+                if (BotMain.INSTANCE.mapTranslation.containsKey(currentMap)) {
+                    currentMap += " (" + BotMain.INSTANCE.mapTranslation.get(currentMap) + ")";
+                }
             } else if (query.getPlayer() != null) {
                 name = "服务器返回的A2S数据无效!";
                 currentPly = query.getPlayer().getPlayers().length + "/未知";

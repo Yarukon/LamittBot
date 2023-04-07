@@ -57,7 +57,9 @@ public class BotMain extends JavaPlugin {
     // 自动回复节点
     public File autoReplyPath;
 
-    public static final String PLUGIN_VERSION = "1.5 Build-230403";
+    public HashMap<String, String> mapTranslation = new HashMap<>();
+
+    public static final String PLUGIN_VERSION = "1.5 Build-230407";
 
     public BotMain() {
         super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Lamitt Bot").build());
@@ -154,6 +156,17 @@ public class BotMain extends JavaPlugin {
 
         try {
             new FFXIVQuestManager();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        // 地图译名
+        try {
+            JsonObject mapNames = (JsonObject) JsonParser.parseString(FileUtils.readFileToString(Paths.get(extResources.getAbsolutePath(), "mapnames.json").toFile(), StandardCharsets.UTF_8));
+            for (Map.Entry<String, JsonElement> entry : mapNames.entrySet()) {
+                this.mapTranslation.put(entry.getKey(), entry.getValue().getAsString());
+            }
+            this.getLogger().info("[Yarukon] 载入了 " + this.mapTranslation.size() + " 条地图译名");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
