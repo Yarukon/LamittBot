@@ -32,11 +32,11 @@ public class CommandGroupValList extends Command {
         }
 
         if (StringUtils.isNumeric(args[0]) && Long.parseLong(args[0]) > 0) {
-            if (BotMain.INSTANCE.values.containsKey(Long.parseLong(args[1]))) {
+            if (BotMain.INSTANCE.values.containsKey(Long.parseLong(args[0]))) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(args[1]).append(" 的群设定:\n");
+                sb.append(args[0]).append(" 的群设定:\n");
 
-                for (ValueBase v : BotMain.INSTANCE.values.get(Long.parseLong(args[1])).valuesList) {
+                for (ValueBase v : BotMain.INSTANCE.values.get(Long.parseLong(args[0])).valuesList) {
                     sb.append(v.getKey()).append(" - ").append((v instanceof MultiBooleanValue || v instanceof MultiMapValue || v instanceof MultiStringValue) ? "不支持显示" : v.getValue()).append("\n");
                 }
 
