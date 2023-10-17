@@ -1,6 +1,5 @@
 package me.yarukon.thread.impl;
 
-import com.sun.jna.platform.win32.WinGDI;
 import me.yarukon.BotMain;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.image.Element;
@@ -17,7 +16,6 @@ import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.ExternalResource;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class ValveServerBulkQueryThread extends ProcessThread {
@@ -61,11 +59,11 @@ public class ValveServerBulkQueryThread extends ProcessThread {
                 currentPly = query.getPlayer().getPlayers().length + "/未知";
             }
 
-            TextElement serverIP = new TextElement(5, startY, 600, 20, 0, ">>  "+ s, ImageUtils.font4);
-            TextElement serverName = new TextElement(5, startY + 25, 600, 20, 0, name, ImageUtils.font4);
-            TextElement mapName = new TextElement(5, startY + 50, 600, 20, 0, "地图: " + currentMap, ImageUtils.font4);
-            TextElement playerNum = new TextElement(5, startY + 75, 600, 20, 0, "玩家: " + currentPly, ImageUtils.font4);
-            TextElement _latency = new TextElement(5, startY + 100, 600, 20, 0, "延迟: " + latency, ImageUtils.font4);
+            TextElement serverIP = new TextElement(5, startY, 600, 20, 0, ">>  "+ s, ImageUtils.font1);
+            TextElement serverName = new TextElement(5, startY + 25, 600, 20, 0, name, ImageUtils.font1);
+            TextElement mapName = new TextElement(5, startY + 50, 600, 20, 0, "地图: " + currentMap, ImageUtils.font1);
+            TextElement playerNum = new TextElement(5, startY + 75, 600, 20, 0, "玩家: " + currentPly, ImageUtils.font1);
+            TextElement _latency = new TextElement(5, startY + 100, 600, 20, 0, "延迟: " + latency, ImageUtils.font1);
 
             elements.add(serverIP);
             elements.add(serverName);

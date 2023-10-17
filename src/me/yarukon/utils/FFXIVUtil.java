@@ -93,9 +93,9 @@ public class FFXIVUtil {
         try {
             LineElement head = new LineElement(5, 25, 800, 30, 5, "物品名称: " + itemName + (isHQ ? " (HQ)" : onlyNQ ?  " (仅NQ)" : "") + " 大区/服务器: " + zoneOrWorld);
             LineElement head2 = new LineElement(5, 50, 800, 30, 5, "最后更新: " + sdf.format(new Timestamp(jsonIn.lastUploadTime)));
-            TextElement hqText = new TextElement(30, 75, 30, 20, 5, "HQ", ImageUtils.font4);
-            TextElement itemCountAndPrice = new TextElement(100, 76, 30, 20, 5, "数量/价格", ImageUtils.font4);
-            TextElement retainer = new TextElement(500, 76, 30, 20, 5, "雇员名称", ImageUtils.font4);
+            TextElement hqText = new TextElement(30, 75, 30, 20, 5, "HQ", ImageUtils.font1);
+            TextElement itemCountAndPrice = new TextElement(100, 76, 30, 20, 5, "数量/价格", ImageUtils.font1);
+            TextElement retainer = new TextElement(500, 76, 30, 20, 5, "雇员名称", ImageUtils.font1);
             ArrayList<Element> elements = new ArrayList<>();
             elements.add(head);
             elements.add(head2);

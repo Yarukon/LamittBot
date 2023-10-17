@@ -36,33 +36,33 @@ public class UniversalisItemElement extends Element {
 		g.drawString(isHQ ? "\ue03c" : "", x + 7, y + 23);
 		
 		// Price (LOL)
-		g.setFont(ImageUtils.font4);
-		Rectangle2D priceBound = ImageUtils.font4.getStringBounds(price, g.getFontRenderContext());
+		g.setFont(ImageUtils.font1);
+		Rectangle2D priceBound = ImageUtils.font1.getStringBounds(price, g.getFontRenderContext());
 		g.drawString(price, x + 70, y + 23);
 		
 		g.setFont(ImageUtils.gamesym);
 		g.drawString("\ue049", x + 70 + (int) priceBound.getWidth(), y + 23);
 		
-		g.setFont(ImageUtils.font4);
+		g.setFont(ImageUtils.font1);
 		String totalStr = " (共" + total;
-		Rectangle2D totalBound = ImageUtils.font4.getStringBounds(totalStr, g.getFontRenderContext());
+		Rectangle2D totalBound = ImageUtils.font1.getStringBounds(totalStr, g.getFontRenderContext());
 		
 		g.drawString(totalStr, x + 80 + (int) priceBound.getWidth(), y + 23);
 		g.setFont(ImageUtils.gamesym);
 		g.drawString("\ue049", x + 80 + (int) priceBound.getWidth() + (int) totalBound.getWidth(), y + 23);
 		
-		g.setFont(ImageUtils.font4);
+		g.setFont(ImageUtils.font1);
 		g.drawString(")", x + 91 + (int) priceBound.getWidth() + (int) totalBound.getWidth(), y + 23);
 
 		// Retainer name
 		
 		g.drawString(retainer, x + 470, y + 23);
 		if (retainerWorld != null) {
-			Rectangle2D retainerNameBound = ImageUtils.font4.getStringBounds(retainer, g.getFontRenderContext());
+			Rectangle2D retainerNameBound = ImageUtils.font1.getStringBounds(retainer, g.getFontRenderContext());
 			g.setFont(ImageUtils.gamesym);
 			g.drawString("\ue05d", x + 472 + (int) retainerNameBound.getWidth(), y + 23);
 			
-			g.setFont(ImageUtils.font4);
+			g.setFont(ImageUtils.font1);
 			g.drawString(retainerWorld, x + 473 + (int) retainerNameBound.getWidth() + 20, y + 23);
 		}
 	}

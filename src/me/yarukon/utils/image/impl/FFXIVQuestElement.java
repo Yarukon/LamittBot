@@ -23,10 +23,10 @@ public class FFXIVQuestElement extends Element {
 	public void doDraw(Graphics2D g) {
 		g.setColor(new Color(255, 255, 255));
 
-		g.setFont(ImageUtils.font4);
+		g.setFont(ImageUtils.font1);
 		g.drawString(result.missionName, 65, 30);
 
-		g.setFont(ImageUtils.font5);
+		g.setFont(ImageUtils.font2);
 		g.drawString(result.patchName + " [" + result.patchVersion + "]", 65, 52);
 		
 		g.drawImage(FFXIVQuestManager.INSTANCE.missionImage, 5, 5, 56, 60, null);
@@ -34,7 +34,7 @@ public class FFXIVQuestElement extends Element {
 		g.drawString("剩余 " + (result.totalQuestSize - result.currentQuestIndex) + " 个任务", 5, 85);
 		
 		String percentage = FFXIVQuestManager.INSTANCE.df.format(result.percentage * 100) + "%";
-		Rectangle2D textBound = ImageUtils.font5.getStringBounds(percentage, g.getFontRenderContext());
+		Rectangle2D textBound = ImageUtils.font2.getStringBounds(percentage, g.getFontRenderContext());
 		g.drawString(percentage, width - 5 - (int) textBound.getWidth(), 85);
 				
 		g.setColor(new Color(222, 223, 214));

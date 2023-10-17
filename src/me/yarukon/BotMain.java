@@ -37,7 +37,6 @@ public class BotMain extends JavaPlugin {
 
     public String filePath = "";
     public File extResources;
-    public File genshinExtRes;
 
     public File cachePath;
     public HashMap<Long, Values> values = new HashMap<>();
@@ -67,7 +66,7 @@ public class BotMain extends JavaPlugin {
 
     public EventFactory eventFactory;
 
-    public WebsocketClient wsClient;
+//    public WebsocketClient wsClient;
 
     public final String[] dataCenterFriendlyName = new String[] {"狗", "猪", "猫", "鸟"};
     public final String[] dataCenterName = new String[] {"豆豆柴", "莫古力", "猫小胖", "陆行鸟"};
@@ -105,7 +104,6 @@ public class BotMain extends JavaPlugin {
 
         filePath = this.getConfigFolder().getAbsolutePath();
         extResources = new File(filePath + File.separator + "VentiBot" + File.separator + "resource");
-        genshinExtRes = new File(extResources.getAbsolutePath() + File.separator + "GenshinRes");
         cachePath = new File(filePath + File.separator + "VentiBot" + File.separator + "cache");
 
         //创建资源目录
@@ -133,7 +131,7 @@ public class BotMain extends JavaPlugin {
         this.createCacheFolder();
 
         // 图片生成Util初始化
-        imgUtil.init(this.getLogger());
+        imgUtil.init();
 
         // 物品ID读取并缓存
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(extResources.getAbsolutePath() + File.separator + "Items.txt")), StandardCharsets.UTF_8))) {
@@ -175,8 +173,8 @@ public class BotMain extends JavaPlugin {
             GlobalEventChannel.INSTANCE.registerListenerHost(eventFactory = new EventFactory(this));
 
             try {
-                wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/sonar"), this.getLogger());
-                wsClient.connect();
+//                wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/sonar"), this.getLogger());
+//                wsClient.connect();
             } catch (Exception e) {
                 e.printStackTrace();
             }

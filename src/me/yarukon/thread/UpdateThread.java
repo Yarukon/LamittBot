@@ -50,26 +50,26 @@ public class UpdateThread extends Thread {
         }
     }
 
-    public TimeHelper timeHelper = new TimeHelper();
-    public TimeHelper connectionCheckTimer = new TimeHelper();
+//    public TimeHelper timeHelper = new TimeHelper();
+//    public TimeHelper connectionCheckTimer = new TimeHelper();
 
     public TimeHelper receiveAndSendMsgTimer = new TimeHelper();
     public TimeHelper cpuLoadUpdateTimer = new TimeHelper();
 
     public void onUpdate() {
-        if (timeHelper.delay(1500, true) && BotMain.INSTANCE.wsClient != null && BotMain.INSTANCE.wsClient.isOpen() && !BotMain.INSTANCE.wsClient.isClosed()) {
-            BotMain.INSTANCE.wsClient.send("Websocket Keep-Alive");
-        }
-
-        if (connectionCheckTimer.delay(5000, true) && BotMain.INSTANCE.wsClient != null && !BotMain.INSTANCE.wsClient.isOpen() && BotMain.INSTANCE.wsClient.isClosed()) {
-            try {
-                BotMain.INSTANCE.wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/sonar"), BotMain.INSTANCE.getLogger());
-                BotMain.INSTANCE.wsClient.connect();
-                BotMain.INSTANCE.getLogger().info("Websocket 断开, 尝试重连!");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+//        if (timeHelper.delay(1500, true) && BotMain.INSTANCE.wsClient != null && BotMain.INSTANCE.wsClient.isOpen() && !BotMain.INSTANCE.wsClient.isClosed()) {
+//            BotMain.INSTANCE.wsClient.send("Websocket Keep-Alive");
+//        }
+//
+//        if (connectionCheckTimer.delay(5000, true) && BotMain.INSTANCE.wsClient != null && !BotMain.INSTANCE.wsClient.isOpen() && BotMain.INSTANCE.wsClient.isClosed()) {
+//            try {
+//                BotMain.INSTANCE.wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/sonar"), BotMain.INSTANCE.getLogger());
+//                BotMain.INSTANCE.wsClient.connect();
+//                BotMain.INSTANCE.getLogger().info("Websocket 断开, 尝试重连!");
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
 
         if (cpuLoadUpdateTimer.delay(1000, true)) {
             BotMain.INSTANCE.cpuLoad = BotMain.INSTANCE.cpu.getSystemCpuLoadBetweenTicks(BotMain.INSTANCE.prevTicks) * 100;

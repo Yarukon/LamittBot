@@ -1,52 +1,26 @@
 package me.yarukon.utils.image;
 
-import com.google.gson.JsonObject;
 import me.yarukon.BotMain;
-import me.yarukon.utils.GenshinQueryUtil;
 import net.mamoe.mirai.utils.MiraiLogger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ImageUtils {
-	public static Font font0;
 	public static Font font1;
 	public static Font font2;
-	public static Font font3;
-	public static Font font4;
-	public static Font font5;
 	public static Font gamesym;
-	public static HashMap<String, Image> images = new HashMap<>();
 
-	public void init(MiraiLogger logger) {
-		this.cacheImage("iconCache", "角色头像", logger);
-		this.cacheImage("elementCache", "元素图标", logger);
-		this.cacheImage("regionCache", "地图区域", logger);
-		this.cacheImage("homeCache", "家园背景", logger, true);
-		this.cacheImage("rarityCache", "稀有值", logger);
-
-		font0 = getFont("DatFont", 45, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font1 = getFont("DatFont", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font2 = getFont("DatFont", 18, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font3 = getFont("DatFont", 14, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font4 = getFont("siyuan", 20, true, BotMain.INSTANCE.extResources.getAbsolutePath());
-		font5 = getFont("siyuan", 16, true, BotMain.INSTANCE.extResources.getAbsolutePath());
+	public void init() {
+		font1 = getFont("siyuan", 20, true, BotMain.INSTANCE.extResources.getAbsolutePath());
+		font2 = getFont("siyuan", 16, true, BotMain.INSTANCE.extResources.getAbsolutePath());
 		gamesym = getFont("gamesym", 20, BotMain.INSTANCE.extResources.getAbsolutePath());
-	}
-
-	public ByteArrayOutputStream generateStatImage(long id, JsonObject obj) throws Exception {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageUtils.createImage(820, 0, true, GenshinQueryUtil.INSTANCE.statusAnalysis(id, obj), out);
-		return out;
 	}
 
 	public static Font getFont(String fontName, int size, String path) {
@@ -120,83 +94,5 @@ public class ImageUtils {
 		stream.close();
 
 		return inStream;
-	}
-
-	public void cacheImage(String path, String type, MiraiLogger logger) {
-		cacheImage(path, type, logger, false);
-	}
-
-	public void cacheImage(String path, String type, MiraiLogger logger, boolean makeRoundCorner) {
-		File targetPath = new File(BotMain.INSTANCE.genshinExtRes.getAbsolutePath() + File.separator + path);
-		for(File p : Objects.requireNonNull(targetPath.listFiles())) {
-			try {
-				BufferedImage img = ImageIO.read(p);
-
-				if(makeRoundCorner) {
-					img = this.makeRoundedCorner(img, 22);
-				}
-
-				images.put(p.getName(), img);
-				logger.info(type + (makeRoundCorner ? " (圆角图像)" : "") + " - " + p.getName() + " -> 内存");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public static void doDownloadAvatarIcon(String imgName) {
-		doDownload(imgName, "iconCache", "https://upload-bbs.mihoyo.com/game_record/genshin/character_icon/UI_AvatarIcon_" + imgName);
-	}
-
-	public static void doDownloadRegionIcon(String imgName) {
-		doDownload(imgName, "regionCache", "https://upload-bbs.mihoyo.com/game_record/genshin/city_icon/UI_ChapterIcon_" + imgName.replace("_Region_", ""));
-	}
-
-	public static void doDownload(String imgName, String targetFolder, String url) {
-		BotMain.INSTANCE.getLogger().warning("检测到不存在的图像文件, 开始下载 " + imgName);
-		File targetPath = new File(BotMain.INSTANCE.genshinExtRes.getAbsolutePath() + File.separator + targetFolder + File.separator + imgName);
-
-		if(targetPath.exists()) {
-			BotMain.INSTANCE.getLogger().info("文件 " + imgName + " 已存在! 跳过下载...");
-			return;
-		}
-
-		try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-			 FileOutputStream fileOutputStream = new FileOutputStream(targetPath)) {
-			byte[] dataBuffer = new byte[1024];
-			int bytesRead;
-			while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-				fileOutputStream.write(dataBuffer, 0, bytesRead);
-			}
-
-			BotMain.INSTANCE.getLogger().info("下载 " + imgName + " 成功! 正在缓存至内存中...");
-			try {
-				Image img = ImageIO.read(targetPath);
-				images.put(imgName, img);
-				BotMain.INSTANCE.getLogger().info("图像 - " + imgName + " -> 内存");
-			} catch (Exception ex) {
-				BotMain.INSTANCE.getLogger().error("加载 " + imgName + " 至内存时发生错误!");
-			}
-		} catch (IOException e) {
-			BotMain.INSTANCE.getLogger().error("下载 " + imgName + " 失败!");
-		}
-	}
-
-	public BufferedImage makeRoundedCorner(BufferedImage image, int cornerRadius) {
-		int w = image.getWidth();
-		int h = image.getHeight();
-		BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = output.createGraphics();
-
-		g2.setComposite(AlphaComposite.Src);
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(Color.WHITE);
-		g2.fill(new RoundRectangle2D.Float(0, 0, w, h, cornerRadius, cornerRadius));
-
-		g2.setComposite(AlphaComposite.SrcAtop);
-		g2.drawImage(image, 0, 0, null);
-
-		g2.dispose();
-		return output;
 	}
 }
