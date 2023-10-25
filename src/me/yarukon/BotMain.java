@@ -38,7 +38,6 @@ public class BotMain extends JavaPlugin {
     public String filePath = "";
     public File extResources;
 
-    public File cachePath;
     public HashMap<Long, Values> values = new HashMap<>();
     public CopyOnWriteArrayList<Long> groupIDs = new CopyOnWriteArrayList<>();
     public static BotMain INSTANCE;
@@ -103,26 +102,21 @@ public class BotMain extends JavaPlugin {
         this.getLogger().info("[Yarukon] Lamitt Bot 正在启动...");
 
         filePath = this.getConfigFolder().getAbsolutePath();
-        extResources = new File(filePath + File.separator + "VentiBot" + File.separator + "resource");
-        cachePath = new File(filePath + File.separator + "VentiBot" + File.separator + "cache");
+        extResources = Paths.get(filePath, "resource").toFile();
 
         //创建资源目录
         if(!extResources.exists())
             extResources.mkdir();
 
-        //创建缓存目录
-        if(!cachePath.exists())
-            cachePath.mkdir();
 
         this.getLogger().info("[Yarukon] 配置文件路径为 " + filePath);
         this.getLogger().info("[Yarukon] 外部文件路径为 " + extResources.getAbsolutePath());
-        this.getLogger().info("[Yarukon] 缓存文件路径为 " + cachePath.getAbsolutePath());
 
         // 地图文件夹
         this.huntMapPath = new File(extResources.getAbsolutePath() + File.separator + "HuntMap");
 
         try {
-            redFlagImage = ImageIO.read(new File(this.huntMapPath + File.separator + ".." + File.separator + "redflag.png"));
+            redFlagImage = ImageIO.read(new File(this.extResources.getAbsolutePath() + File.separator + "redflag.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -216,7 +210,7 @@ public class BotMain extends JavaPlugin {
     public void createCacheFolder() {}
 
     public boolean loadConfig() {
-        File jsonFile = new File(filePath + "/VentiBotCfg.json");
+        File jsonFile = new File(filePath + "/config.json");
         if (!jsonFile.exists()) {
             try {
                 if(jsonFile.createNewFile()) {
@@ -295,7 +289,7 @@ public class BotMain extends JavaPlugin {
 
     public void saveConfig() {
         try {
-            File jsonFile = new File(filePath + "/VentiBotCfg.json");
+            File jsonFile = new File(filePath + "/config.json");
             Writer fileWriter = new OutputStreamWriter(Files.newOutputStream(jsonFile.toPath()), StandardCharsets.UTF_8);;
 
             JsonObject root = new JsonObject();
