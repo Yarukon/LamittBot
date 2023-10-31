@@ -1,5 +1,6 @@
 package me.yarukon.thread.impl;
 
+import me.yarukon.utils.source.SteamServerPlayer;
 import me.yarukon.value.Values;
 import me.yarukon.thread.ProcessThread;
 import me.yarukon.utils.source.ServerPlayer;
@@ -38,9 +39,12 @@ public class ValveServerQueryThread extends ProcessThread {
             serverEnv = result.getServerEnvironment();
             currentPly = result.getPlayers() + "/" + Math.abs(result.getMaxPlayers());
             latency = result.getLatency() + "ms";
-        } else if (query.getPlayer() != null) {
-            name = "服务器返回的A2S数据无效!";
-            currentPly = query.getPlayer().getPlayers().length + "/未知";
+        } else {
+            SteamServerPlayer ply = query.getPlayer();
+            if (ply != null) {
+                name = "服务器返回的A2S数据无效!";
+                currentPly = ply.getPlayers().length + "/未知";
+            }
         }
 
         if (value.enableSSIPlyList.getValue()) {

@@ -17,7 +17,7 @@ public class SteamServerQuery {
 	public SteamServerQuery(InetAddress Address, int Port) {
 		try {
 			this.UDPClient = new DatagramSocket();
-			this.UDPClient.setSoTimeout(2000);
+			this.UDPClient.setSoTimeout(1000);
 			this.serverAddress = Address;
 			this.serverPort = Port;
 		} catch (SocketException e) {

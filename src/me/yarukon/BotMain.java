@@ -57,7 +57,7 @@ public class BotMain extends JavaPlugin {
 
     public HashMap<String, String> mapTranslation = new HashMap<>();
 
-    public static final String PLUGIN_VERSION = "1.6 Build-231017";
+    public static final String PLUGIN_VERSION = "1.6 Build-231031";
 
     public BotMain() {
         super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Lamitt Bot").build());

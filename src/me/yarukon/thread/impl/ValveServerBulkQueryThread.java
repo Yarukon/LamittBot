@@ -7,6 +7,7 @@ import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.utils.image.impl.LineElement;
 import me.yarukon.utils.image.impl.TextElement;
 import me.yarukon.utils.source.SteamServerInfo;
+import me.yarukon.utils.source.SteamServerPlayer;
 import me.yarukon.utils.source.SteamServerQuery;
 import me.yarukon.value.Values;
 import me.yarukon.value.impl.Keypair;
@@ -54,9 +55,12 @@ public class ValveServerBulkQueryThread extends ProcessThread {
                 if (BotMain.INSTANCE.mapTranslation.containsKey(currentMap)) {
                     currentMap += " (" + BotMain.INSTANCE.mapTranslation.get(currentMap) + ")";
                 }
-            } else if (query.getPlayer() != null) {
-                name = "服务器返回的A2S数据无效!";
-                currentPly = query.getPlayer().getPlayers().length + "/未知";
+            } else {
+                SteamServerPlayer ply = query.getPlayer();
+                if (ply != null) {
+                    name = "服务器返回的A2S数据无效!";
+                    currentPly = ply.getPlayers().length + "/未知";
+                }
             }
 
             TextElement serverIP = new TextElement(5, startY, 600, 20, 0, ">>  "+ s, ImageUtils.font1);
