@@ -227,6 +227,8 @@ public class BotMain extends JavaPlugin {
     }
 
     public boolean loadProxy() {
+        BotUtils.proxyValid = false;
+
         try {
             if (!Paths.get(extResources.getAbsolutePath(), "proxy.json").toFile().exists())
                 return false;
