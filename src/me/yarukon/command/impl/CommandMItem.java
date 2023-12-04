@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 public class CommandMItem extends Command {
 
     public CommandMItem() {
-        super("mitem", "FFXIV查价指令", CommandType.GROUP_CHAT);
+        super("mitem", "FFXIV物品市场价格查询", CommandType.GROUP_CHAT);
         this.setUsage(".mitem <物品名称> <大区/服务器> [查询数量]");
     }
 

@@ -16,7 +16,6 @@ public class CommandStatus extends Command {
     public CommandStatus() {
         super("status", "显示Bot状态", CommandType.BOTH);
         this.setOwnerOnly(true);
-        this.setOwnerOnlyType(OwnerOnlyType.BOTH);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class CommandStatus extends Command {
         Bot b = Bot.getInstanceOrNull(BotMain.INSTANCE.targetBotQQ);
 
         StringBuilder sb = new StringBuilder();
-        sb.append("[Lamitt Bot] Version ").append(BotMain.PLUGIN_VERSION).append("\n"); // Version
+        sb.append("[" + BotMain.BOT_NAME + "] Version ").append(BotMain.PLUGIN_VERSION).append("\n"); // Version
         sb.append(b == null ? "Unknown" : b.getNick()).append(" (").append(BotMain.INSTANCE.targetBotQQ).append(")").append("\n"); // Bot name and QQ
         sb.append("加入的群: ").append(b == null ? "-1" : b.getGroups().size()).append(" 个 有效的群配置: ").append(BotMain.INSTANCE.values.size()).append(" 个").append("\n"); // Group size and enabled size
         sb.append("接收信息: ").append(BotMain.receiveInOneMin).append("/m 总量: ").append(BotMain.totalReceive).append("\n"); // Received message in total

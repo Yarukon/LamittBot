@@ -1,6 +1,7 @@
 package me.yarukon.command.impl;
 
 import me.yarukon.BotMain;
+import me.yarukon.command.CommandManager;
 import me.yarukon.value.Values;
 import me.yarukon.command.Command;
 import me.yarukon.command.CommandType;
@@ -22,11 +23,14 @@ public class CommandHelp extends Command {
         StringBuilder sb = new StringBuilder();
         for (Command c : BotMain.INSTANCE.commandManager.commands) {
             if (c.getType() != CommandType.PRIVATE_CHAT) {
-                sb.append(".").append(c.getName()).append(" - ").append(c.getHelpMessage()).append(c.isOwnerOnly() && (c.getOwnerOnlyType() == OwnerOnlyType.BOTH || c.getOwnerOnlyType() == OwnerOnlyType.GROUP_CHAT) ? " [仅主人可用]" : "").append(!c.isCommandUsable(value) ? " [未启用]" : "").append("\n");
+                if (sender.getId() == BotMain.INSTANCE.botOwnerQQ)
+                    sb.append(CommandManager.PREFIX).append(c.getName()).append(" - ").append(c.getHelpMessage()).append(c.isCommandUsable(value) ? " [未启用]" : "").append("\n");
+                else if (c.isCommandUsable(value) && (c.getOwnerOnlyType() != OwnerOnlyType.BOTH || c.getOwnerOnlyType() != OwnerOnlyType.GROUP_CHAT))
+                    sb.append(CommandManager.PREFIX).append(c.getName()).append(" - ").append(c.getHelpMessage()).append("\n");
             }
         }
 
-        group.sendMessage("========== Venti Bot ==========\n" + sb);
+        group.sendMessage("========== " + BotMain.BOT_NAME + " ==========\n" + sb);
     }
 
     @Override
@@ -34,10 +38,10 @@ public class CommandHelp extends Command {
         StringBuilder sb = new StringBuilder();
         for (Command c : BotMain.INSTANCE.commandManager.commands) {
             if (c.getType() != CommandType.GROUP_CHAT) {
-                sb.append(".").append(c.getName()).append(" - ").append(c.getHelpMessage()).append("\n");
+                sb.append(CommandManager.PREFIX).append(c.getName()).append(" - ").append(c.getHelpMessage()).append("\n");
             }
         }
 
-        friend.sendMessage("========== Venti Bot ==========\n" + sb);
+        friend.sendMessage("========== " + BotMain.BOT_NAME + " ==========\n" + sb);
     }
 }

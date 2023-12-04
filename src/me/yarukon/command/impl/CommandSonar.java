@@ -28,7 +28,7 @@ public class CommandSonar extends Command {
                         if (args[1].equals("list")) {
                             StringBuilder sb = new StringBuilder();
                             for (Map.Entry<String, MultiBoolean> a : value.regions.getValues().entrySet()) {
-                                sb.append(String.format("%s: %s", a.getKey(), a.getValue().getState())).append("\n");
+                                sb.append(String.format("%s: %s", a.getKey(), a.getValue().getState() ? "启用" : "禁用")).append("\n");
                             }
 
                             group.sendMessage(sb.substring(0, sb.toString().length() - 1));
@@ -38,7 +38,7 @@ public class CommandSonar extends Command {
                         MultiBoolean mb = value.regions.getSetting(args[1]);
                         if (mb != null) {
                             mb.setState(!mb.getState());
-                            group.sendMessage("成功: " + mb.name + " - " + mb.state);
+                            group.sendMessage("成功: " + mb.name + " - " + (mb.state ? "启用" : "禁用"));
                             BotMain.INSTANCE.saveConfig();
                         } else {
                             group.sendMessage("数据中心 " + args[1] + " 不存在!");
@@ -53,8 +53,9 @@ public class CommandSonar extends Command {
                         if (args[1].equals("list")) {
                             StringBuilder sb = new StringBuilder();
                             for (Map.Entry<String, MultiBoolean> a : value.ranks.getValues().entrySet()) {
-                                sb.append(String.format("%s: %s", a.getKey(), a.getValue().getState())).append("\n");
+                                sb.append(String.format("%s: %s", a.getKey(), a.getValue().getState() ? "启用" : "禁用")).append("\n");
                             }
+
                             group.sendMessage(sb.substring(0, sb.toString().length() - 1));
                             return;
                         }
@@ -64,12 +65,11 @@ public class CommandSonar extends Command {
                             mb.setState(!mb.getState());
                             group.sendMessage("成功: " + mb.name + " - " + mb.state);
                             BotMain.INSTANCE.saveConfig();
-                        } else {
+                        } else
                             group.sendMessage("等级 " + args[1] + " 不存在!");
-                        }
-                    } else {
+                    } else
                         this.sendUsage(group);
-                    }
+
                     break;
 
                 case "fate":
@@ -91,20 +91,17 @@ public class CommandSonar extends Command {
                                     group.sendMessage("移除FATE白名单 " + args[2] + " " + (value.fateFilter.delValue(args[2]) ? "成功" : "失败"));
                                     BotMain.INSTANCE.saveConfig();
                             }
-                        } else {
+                        } else
                             this.sendUsage(group);
-                        }
-                    } else {
+                    } else
                         this.sendUsage(group);
-                    }
                     break;
 
                 default:
                     this.sendUsage(group);
             }
-        } else {
+        } else
             this.sendUsage(group);
-        }
     }
 
     @Override

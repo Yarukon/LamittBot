@@ -36,7 +36,7 @@ public class FFXIVQuestElement extends Element {
 		String percentage = FFXIVQuestManager.INSTANCE.df.format(result.percentage * 100) + "%";
 		Rectangle2D textBound = ImageUtils.font2.getStringBounds(percentage, g.getFontRenderContext());
 		g.drawString(percentage, width - 5 - (int) textBound.getWidth(), 85);
-				
+
 		g.setColor(new Color(222, 223, 214));
 		g.fillRect(5, 90, (int) (result.percentage * (width - 10)), 8);
 

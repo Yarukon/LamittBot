@@ -12,7 +12,6 @@ public abstract class Command {
     private final String helpMessage;
     private final CommandType type;
     private boolean ownerOnly = false;
-
     private OwnerOnlyType ownerOnlyType = OwnerOnlyType.BOTH;
 
     private String usage;
@@ -37,10 +36,6 @@ public abstract class Command {
 
     public boolean match(String name) {
         return this.name.equalsIgnoreCase(name);
-    }
-
-    public boolean isOwnerOnly() {
-        return ownerOnly;
     }
 
     public void setOwnerOnly(boolean ownerOnly) {
@@ -68,7 +63,7 @@ public abstract class Command {
     }
 
     public OwnerOnlyType getOwnerOnlyType() {
-        return ownerOnlyType;
+        return ownerOnly ? OwnerOnlyType.NONE : ownerOnlyType;
     }
 
     public void setOwnerOnlyType(OwnerOnlyType ownerOnlyType) {

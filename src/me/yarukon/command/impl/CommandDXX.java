@@ -13,7 +13,7 @@ public class CommandDXX extends Command {
 
     public CommandDXX() {
         super("大学习", "获取指定ID的青年大学习答案", CommandType.GROUP_CHAT);
-        this.setUsage(".大学习 <list/ID>");
+        this.setUsage(".大学习 [list/ID]");
     }
 
     @Override

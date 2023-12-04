@@ -25,6 +25,7 @@ public class NodeManager {
 
         for(Map.Entry<String, JsonElement> element : objIn.entrySet()) {
             ArrayList<Node> temp = new ArrayList<>();
+            boolean isAlias = false;
             for(Map.Entry<String, JsonElement> subElement : element.getValue().getAsJsonObject().entrySet()) {
                 String[] splited = subElement.getKey().split(":");
                 switch (splited[0]) {
@@ -56,6 +57,11 @@ public class NodeManager {
                         temp.add(dateNode);
                         break;
 
+                    case "ALIAS":
+                        isAlias = true;
+                        this.nodes.put(element.getKey(), this.nodes.get(subElement.getValue().getAsString()));
+                        break;
+
                     default:
                         StringNode strNode = new StringNode(subElement.getKey());
                         for (JsonElement e : subElement.getValue().getAsJsonArray()) {
@@ -65,10 +71,12 @@ public class NodeManager {
                 }
             }
 
-            this.nodes.put(element.getKey(), temp);
+            if (!isAlias) {
+                this.nodes.put(element.getKey(), temp);
+            }
         }
 
-        BotMain.INSTANCE.getLogger().info("加载了 " + nodes.size() + " 个自动回复节点!");
+        BotMain.INSTANCE.info("加载了 " + nodes.size() + " 个自动回复节点!");
     }
 
 }

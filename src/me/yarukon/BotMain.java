@@ -27,6 +27,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -57,7 +58,10 @@ public class BotMain extends JavaPlugin {
 
     public HashMap<String, String> mapTranslation = new HashMap<>();
 
-    public static final String PLUGIN_VERSION = "1.6 Build-231031";
+    public static final String BOT_NAME = "Lamitt Bot";
+    public static final String BOT_NAME_SHORT = "Lamitt";
+
+    public static final String PLUGIN_VERSION = "1.61 Build-231204";
 
     public BotMain() {
         super(new JvmPluginDescriptionBuilder("me.yarukon.BotMain", "1.0").author("Yarukon").info("Lamitt Bot").build());
@@ -99,7 +103,7 @@ public class BotMain extends JavaPlugin {
         commandManager = new CommandManager();
 
         values.clear();
-        this.getLogger().info("[Yarukon] Lamitt Bot 正在启动...");
+        this.info("正在启动...");
 
         filePath = this.getConfigFolder().getAbsolutePath();
         extResources = Paths.get(filePath, "resource").toFile();
@@ -109,8 +113,8 @@ public class BotMain extends JavaPlugin {
             extResources.mkdir();
 
 
-        this.getLogger().info("[Yarukon] 配置文件路径为 " + filePath);
-        this.getLogger().info("[Yarukon] 外部文件路径为 " + extResources.getAbsolutePath());
+        this.info("配置文件路径为 " + filePath);
+        this.info("外部文件路径为 " + extResources.getAbsolutePath());
 
         // 地图文件夹
         this.huntMapPath = new File(extResources.getAbsolutePath() + File.separator + "HuntMap");
@@ -120,9 +124,6 @@ public class BotMain extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // 缓存文件生成 要加啥就在下边的方法创建
-        this.createCacheFolder();
 
         // 图片生成Util初始化
         imgUtil.init();
@@ -158,7 +159,7 @@ public class BotMain extends JavaPlugin {
             for (Map.Entry<String, JsonElement> entry : mapNames.entrySet()) {
                 this.mapTranslation.put(entry.getKey(), entry.getValue().getAsString());
             }
-            this.getLogger().info("[Yarukon] 载入了 " + this.mapTranslation.size() + " 条地图译名");
+            this.info("载入了 " + this.mapTranslation.size() + " 条地图译名");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -207,20 +208,30 @@ public class BotMain extends JavaPlugin {
         return false;
     }
 
-    public void createCacheFolder() {}
+    public void info(String message, String ...format) {
+        this.getLogger().info("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    }
+
+    public void warning(String message, String ...format) {
+        this.getLogger().warning("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    }
+
+    public void error(String message, String ...format) {
+        this.getLogger().error("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    }
 
     public boolean loadConfig() {
         File jsonFile = new File(filePath + "/config.json");
         if (!jsonFile.exists()) {
             try {
                 if(jsonFile.createNewFile()) {
-                    this.getLogger().error("[Yarukon] 配置文件不存在, 已自动创建!");
+                    error("配置文件不存在, 已自动创建!");
                 } else {
-                    this.getLogger().error("[Yarukon] 配置文件不存在, 但创建失败!");
+                    error("配置文件不存在, 但创建失败!");
                 }
                 return false;
             } catch (Exception ex) {
-                this.getLogger().error("[Yarukon] 创建配置文件时发生错误!");
+                error("创建配置文件时发生错误!");
                 ex.printStackTrace();
                 return false;
             }
@@ -277,10 +288,10 @@ public class BotMain extends JavaPlugin {
                     this.values.put(group.get("GroupID").getAsLong(), vals);
                     this.groupIDs.add(group.get("GroupID").getAsLong());
                 }
-                this.getLogger().info("[Yarukon] 读取了 " + this.values.size() + " 个数据!");
+                info("读取了 " + this.values.size() + " 个数据!");
                 return true;
             } catch (Exception ex) {
-                this.getLogger().error("[Yarukon] 读取配置文件时发生错误, 请确认格式是否正确!");
+                error("读取配置文件时发生错误, 请确认格式是否正确!");
                 ex.printStackTrace();
                 return false;
             }
@@ -341,10 +352,10 @@ public class BotMain extends JavaPlugin {
             fileWriter.write(root.toString());
             fileWriter.close();
 
-            this.getLogger().info("[Yarukon] 配置保存成功!");
+            info("配置保存成功!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            this.getLogger().error("[Yarukon] 保存配置文件时发生错误!");
+            error("保存配置文件时发生错误!");
         }
     }
 
@@ -357,7 +368,7 @@ public class BotMain extends JavaPlugin {
             }
 
             this.saveConfig();
-            return "成功: 成功添加了群 " + groupID;
+            return "成功: 成功添加了群配置 " + groupID;
         } else {
             return "失败: 该配置已存在!";
         }
@@ -369,9 +380,9 @@ public class BotMain extends JavaPlugin {
             this.groupIDs.remove(groupID);
 
             this.saveConfig();
-            return "成功: 成功移除了群 " + groupID;
+            return "成功: 成功移除了群配置 " + groupID;
         } else {
-            return "失败: 该配置不存在!";
+            return "失败: 找不到该配置!";
         }
     }
 }

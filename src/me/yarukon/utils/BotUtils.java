@@ -12,12 +12,17 @@ import java.util.Random;
 public class BotUtils {
     public static final Random rand = new Random();
     public static Gson gson = new Gson();
+
     public static String sendGet(String url, String param) throws Exception {
+        return sendGet(url, param, false);
+    }
+
+    public static String sendGet(String url, String param, boolean useProxy) throws Exception {
         URL obj = new URL(url + (param != null && !param.isEmpty() ? "?" + param : ""));
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        con.setConnectTimeout(10000);
-        con.setReadTimeout(10000);
+        con.setConnectTimeout(5000);
+        con.setReadTimeout(5000);
 
         con.setRequestMethod("GET"); // 请求方法为GET
 
@@ -43,5 +48,4 @@ public class BotUtils {
     public static boolean isBetween(int target, int min, int max, boolean withEquals) {
         return withEquals ? (target >= min && target <= max) : (target > min && target < max);
     }
-
 }

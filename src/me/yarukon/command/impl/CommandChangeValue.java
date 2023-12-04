@@ -21,7 +21,6 @@ public class CommandChangeValue extends Command {
     public CommandChangeValue() {
         super("cval", CommandType.BOTH);
         this.setOwnerOnly(true);
-        this.setOwnerOnlyType(OwnerOnlyType.BOTH);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class CommandReplyReload extends Command {
         if (doReload()) {
             group.sendMessage("重载了 " + NodeManager.INSTANCE.nodes.size() + " 个自动回复节点!");
         } else {
-            group.sendMessage("重载失败!\n" + lastException == null ? "Unknown error" : lastException.getLocalizedMessage());
+            group.sendMessage("重载失败!\n" + lastException.getLocalizedMessage());
             lastException = null;
         }
     }
@@ -38,7 +38,7 @@ public class CommandReplyReload extends Command {
         if (doReload()) {
             friend.sendMessage("重载了 " + NodeManager.INSTANCE.nodes.size() + " 个自动回复节点!");
         } else {
-            friend.sendMessage("重载失败!\n" + lastException == null ? "Unknown error" : lastException.getLocalizedMessage());
+            friend.sendMessage("重载失败!\n" + lastException.getLocalizedMessage());
             lastException = null;
         }
     }
