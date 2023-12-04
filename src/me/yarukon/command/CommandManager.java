@@ -38,6 +38,7 @@ public class CommandManager {
         addCommand(new CommandGroupList());
         addCommand(new CommandQueueClear());
         addCommand(new CommandRemoteChat());
+        addCommand(new CommandReloadProxy());
         addCommand(new CommandGroupValList());
         addCommand(new CommandJoinedGroupList());
 

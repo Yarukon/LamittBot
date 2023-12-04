@@ -21,7 +21,7 @@ public class UpdateThread extends Thread {
         final long OPTIMAL_TIME = 1000000000 / tickrate;
         long lastUpdateTime = 0;
 
-        BotMain.INSTANCE.getLogger().info("更新线程已注册!");
+        BotMain.INSTANCE.info("更新线程已注册!");
         while (true) {
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;

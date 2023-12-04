@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
@@ -13,13 +15,19 @@ public class BotUtils {
     public static final Random rand = new Random();
     public static Gson gson = new Gson();
 
+    public static boolean proxyValid = false;
+    public static String proxyIP = "";
+    public static short proxyPort = 0;
+
     public static String sendGet(String url, String param) throws Exception {
         return sendGet(url, param, false);
     }
 
     public static String sendGet(String url, String param, boolean useProxy) throws Exception {
         URL obj = new URL(url + (param != null && !param.isEmpty() ? "?" + param : ""));
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        Proxy proxy = proxyValid ? new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyIP, proxyPort)) : null;
+        HttpURLConnection con = (HttpURLConnection) (proxyValid ? obj.openConnection(proxy) : obj.openConnection());
 
         con.setConnectTimeout(5000);
         con.setReadTimeout(5000);
@@ -28,7 +36,7 @@ public class BotUtils {
 
         // Headers
         con.setRequestProperty("Accept", "application/json, text/plain");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36 Edg/100.0.1185.50");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36");
 
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));

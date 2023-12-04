@@ -8,6 +8,7 @@ import me.yarukon.command.CommandManager;
 import me.yarukon.ffxivQuests.FFXIVQuestManager;
 import me.yarukon.node.NodeManager;
 import me.yarukon.thread.UpdateThread;
+import me.yarukon.utils.BotUtils;
 import me.yarukon.utils.WebsocketClient;
 import me.yarukon.utils.image.ImageUtils;
 import me.yarukon.value.*;
@@ -164,6 +165,11 @@ public class BotMain extends JavaPlugin {
             ex.printStackTrace();
         }
 
+        // 代理
+        if (this.loadProxy()) {
+            this.info("读入了代理数据 %s:%d", BotUtils.proxyIP, BotUtils.proxyPort);
+        }
+
         if(this.loadConfig()) {
             GlobalEventChannel.INSTANCE.registerListenerHost(eventFactory = new EventFactory(this));
 
@@ -208,16 +214,34 @@ public class BotMain extends JavaPlugin {
         return false;
     }
 
-    public void info(String message, String ...format) {
-        this.getLogger().info("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    public void info(String message, Object ...format) {
+        this.getLogger().info("[" + BOT_NAME + "] " + String.format(message, format));
     }
 
-    public void warning(String message, String ...format) {
-        this.getLogger().warning("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    public void warning(String message, Object ...format) {
+        this.getLogger().warning("[" + BOT_NAME + "] " + String.format(message, format));
     }
 
-    public void error(String message, String ...format) {
-        this.getLogger().error("[" + BOT_NAME + "] " + String.format(message, (Object) format));
+    public void error(String message, Object ...format) {
+        this.getLogger().error("[" + BOT_NAME + "] " + String.format(message, format));
+    }
+
+    public boolean loadProxy() {
+        try {
+            if (!Paths.get(extResources.getAbsolutePath(), "proxy.json").toFile().exists())
+                return false;
+
+            JsonObject proxyData = (JsonObject) JsonParser.parseString(FileUtils.readFileToString(Paths.get(extResources.getAbsolutePath(), "proxy.json").toFile(), StandardCharsets.UTF_8));
+            BotUtils.proxyIP = proxyData.get("ip").getAsString();
+            BotUtils.proxyPort = proxyData.get("port").getAsShort();
+            BotUtils.proxyValid = true;
+
+            return true;
+        } catch (Exception ex) {
+            BotUtils.proxyValid = false;
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     public boolean loadConfig() {
