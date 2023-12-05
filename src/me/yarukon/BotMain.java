@@ -28,6 +28,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,11 +71,15 @@ public class BotMain extends JavaPlugin {
 
     public EventFactory eventFactory;
 
-//    public WebsocketClient wsClient;
+    public WebsocketClient wsClient;
 
     public final String[] dataCenterFriendlyName = new String[] {"狗", "猪", "猫", "鸟"};
     public final String[] dataCenterName = new String[] {"豆豆柴", "莫古力", "猫小胖", "陆行鸟"};
-    public final String[] allZoneName = new String[] {"水晶塔", "银泪湖", "太阳海岸", "伊修加德", "拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿", "延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园", "宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"};
+    public final ArrayList<String> allZoneName = new ArrayList<>(Arrays.asList(
+            "水晶塔", "银泪湖", "太阳海岸", "伊修加德", "红茶川",
+            "拂晓之间", "旅人栈桥", "梦羽宝境", "潮风亭", "白金幻象", "白银乡", "神拳痕", "龙巢神殿",
+            "延夏", "摩杜纳", "柔风海湾", "海猫茶屋", "琥珀原", "紫水栈桥", "静语庄园",
+            "宇宙和音", "幻影群岛", "拉诺西亚", "晨曦王座", "沃仙曦染", "神意之地", "红玉海", "萌芽池"));
 
     public CommandManager commandManager;
 
@@ -174,8 +179,8 @@ public class BotMain extends JavaPlugin {
             GlobalEventChannel.INSTANCE.registerListenerHost(eventFactory = new EventFactory(this));
 
             try {
-//                wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/sonar"), this.getLogger());
-//                wsClient.connect();
+                wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/"), this.getLogger());
+                wsClient.connect();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -192,7 +197,6 @@ public class BotMain extends JavaPlugin {
                 return this.dataCenterName[i];
             }
         }
-
         return null;
     }
 
@@ -202,16 +206,11 @@ public class BotMain extends JavaPlugin {
                 return true;
             }
         }
-
         return false;
     }
 
     public boolean isZoneExist(String in) {
-        for(String s : this.allZoneName) {
-            if (s.equals(in)) return true;
-        }
-
-        return false;
+        return this.allZoneName.contains(in);
     }
 
     public void info(String message, Object ...format) {
