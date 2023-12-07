@@ -65,7 +65,7 @@ public class FFXIVUtil {
         return false;
     }
 
-    public static BufferedImage getHuntPosition(BufferedImage imageIn, float xPos, float yPos, float scale, int resolution) {
+    public static BufferedImage getHuntImage(BufferedImage imageIn, float xPos, float yPos, float scale, int resolution) {
         BufferedImage imgCopy = FFXIVUtil.deepCopy(imageIn);
         Graphics2D g = imgCopy.createGraphics();
 

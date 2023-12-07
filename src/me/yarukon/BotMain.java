@@ -191,6 +191,11 @@ public class BotMain extends JavaPlugin {
         }
     }
 
+    @Override
+    public void onDisable() {
+        this.saveConfig();
+    }
+
     public String getDataCenterNameFromFriendlyName(String in) {
         for(int i = 0; i < this.dataCenterFriendlyName.length; ++i) {
             if (this.dataCenterFriendlyName[i].equals(in)) {

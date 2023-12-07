@@ -16,7 +16,7 @@ public class CommandSonar extends Command {
     public CommandSonar() {
         super("sonar", "群Sonar广播设置");
         this.setOwnerOnly(true);
-        this.setUsage(".sonar <region/rank/fate> <list/add/del|value> <FATE名称>");
+        this.setUsage(".sonar <region/rank/level/fate> <list/add/del|value> <FATE名称>");
     }
 
     @Override
@@ -63,13 +63,35 @@ public class CommandSonar extends Command {
                         MultiBoolean mb = value.ranks.getSetting(args[1]);
                         if (mb != null) {
                             mb.setState(!mb.getState());
-                            group.sendMessage("成功: " + mb.name + " - " + mb.state);
+                            group.sendMessage("成功: " + mb.name + " - " + (mb.state ? "启用" : "禁用"));
+                            BotMain.INSTANCE.saveConfig();
+                        } else
+                            group.sendMessage("恶名精英等级 " + args[1] + " 不存在!");
+                    } else
+                        this.sendUsage(group);
+                    break;
+
+                case "level":
+                    if (args.length >= 2) {
+                        if (args[1].equals("list")) {
+                            StringBuilder sb = new StringBuilder();
+                            for (Map.Entry<String, MultiBoolean> a : value.levels.getValues().entrySet()) {
+                                sb.append(String.format("%s: %s", a.getKey(), a.getValue().getState() ? "启用" : "禁用")).append("\n");
+                            }
+
+                            group.sendMessage(sb.substring(0, sb.toString().length() - 1));
+                            return;
+                        }
+
+                        MultiBoolean mb = value.levels.getSetting(args[1]);
+                        if (mb != null) {
+                            mb.setState(!mb.getState());
+                            group.sendMessage("成功: " + mb.name + " - " + (mb.state ? "启用" : "禁用"));
                             BotMain.INSTANCE.saveConfig();
                         } else
                             group.sendMessage("等级 " + args[1] + " 不存在!");
                     } else
                         this.sendUsage(group);
-
                     break;
 
                 case "fate":

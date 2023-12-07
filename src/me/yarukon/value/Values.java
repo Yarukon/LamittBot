@@ -31,6 +31,7 @@ public class Values {
     // 唢呐
     public MultiBooleanValue regions = new MultiBooleanValue("SonarRegion", valuesList, new MultiBoolean("陆行鸟", false), new MultiBoolean("莫古力", false), new MultiBoolean("猫小胖", false), new MultiBoolean("豆豆柴", false));
     public MultiBooleanValue ranks = new MultiBooleanValue("SonarRanks", valuesList, new MultiBoolean("SS", false), new MultiBoolean("S", false), new MultiBoolean("A", false), new MultiBoolean("B", false));
+    public MultiBooleanValue levels = new MultiBooleanValue("SonarLevels", valuesList, new MultiBoolean("90", false), new MultiBoolean("80", false), new MultiBoolean("70", false), new MultiBoolean("60", false), new MultiBoolean("50", false));
     public MultiStringValue fateFilter = new MultiStringValue("FateFilter", valuesList);
 
     // 物价查询

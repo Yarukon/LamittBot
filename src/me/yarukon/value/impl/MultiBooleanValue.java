@@ -12,9 +12,8 @@ public class MultiBooleanValue extends ValueBase {
     public MultiBooleanValue(String key, ArrayList<ValueBase> targetList, MultiBoolean... multiBooleans) {
         this.key = key;
 
-        for(MultiBoolean mb : multiBooleans) {
+        for(MultiBoolean mb : multiBooleans)
             this.values.put(mb.name, mb);
-        }
 
         targetList.add(this);
     }
@@ -29,10 +28,8 @@ public class MultiBooleanValue extends ValueBase {
 
     public boolean getValue(String name) {
         MultiBoolean bol = this.values.get(name);
-
-        if (bol != null) {
+        if (bol != null)
             return bol.state;
-        }
 
         return false;
     }

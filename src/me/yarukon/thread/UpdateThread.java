@@ -3,6 +3,7 @@ package me.yarukon.thread;
 import me.yarukon.BotMain;
 import me.yarukon.utils.TimeHelper;
 import me.yarukon.utils.WebsocketClient;
+import org.java_websocket.enums.ReadyState;
 
 import java.net.URI;
 
@@ -61,10 +62,9 @@ public class UpdateThread extends Thread {
             BotMain.INSTANCE.wsClient.send("Websocket Keep-Alive");
         }
 
-        if (connectionCheckTimer.delay(5000, true) && BotMain.INSTANCE.wsClient != null && !BotMain.INSTANCE.wsClient.isOpen() && BotMain.INSTANCE.wsClient.isClosed()) {
+        if (connectionCheckTimer.delay(10000, true) && BotMain.INSTANCE.wsClient != null && !BotMain.INSTANCE.wsClient.isOpen() && BotMain.INSTANCE.wsClient.isClosed() && BotMain.INSTANCE.wsClient.getReadyState() != ReadyState.NOT_YET_CONNECTED) {
             try {
-                BotMain.INSTANCE.wsClient = new WebsocketClient(new URI("ws://127.0.0.1:11332/"), BotMain.INSTANCE.getLogger());
-                BotMain.INSTANCE.wsClient.connect();
+                BotMain.INSTANCE.wsClient.reconnect();
                 BotMain.INSTANCE.getLogger().info("Websocket 断开, 尝试重连!");
             } catch (Exception ex) {
                 ex.printStackTrace();

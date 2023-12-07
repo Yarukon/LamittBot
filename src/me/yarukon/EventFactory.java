@@ -22,8 +22,6 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -172,22 +170,20 @@ public class EventFactory extends SimpleListenerHost {
                     Group g = b.getGroup(v.getKey());
                     if (g == null) continue;
 
+                    boolean isHunt = v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().ranks.getValue(huntInfo.rank) && v.getValue().levels.getValue(String.valueOf(huntInfo.level));
                     boolean isFate = huntInfo.rank.equals("FATE") && v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().fateFilter.hasValue(huntInfo.name);
-                    if ((v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().ranks.getValue(huntInfo.rank)) || isFate) {
+
+                    if (isHunt || isFate) {
                         if (!BotMain.INSTANCE.huntMap.containsKey(huntInfo.mapPath)) {
                             File f = new File(BotMain.INSTANCE.huntMapPath, huntInfo.mapPath + ".png");
-                            if (f.exists()) {
-                                BufferedImage tempImg = ImageIO.read(f);
-                                BufferedImage result = new BufferedImage(tempImg.getWidth(), tempImg.getHeight(), BufferedImage.TYPE_INT_RGB);
-                                result.createGraphics().drawImage(tempImg, 0, 0, Color.WHITE, null);
-                                BotMain.INSTANCE.huntMap.put(huntInfo.mapPath, result);
-                            }
+                            if (f.exists())
+                                BotMain.INSTANCE.huntMap.put(huntInfo.mapPath, ImageIO.read(f));
                         }
 
                         Image image = null;
                         if (!huntInfo.isDead && BotMain.INSTANCE.huntMap.containsKey(huntInfo.mapPath)) {
                             ByteArrayOutputStream os = new ByteArrayOutputStream();
-                            ImageIO.write(FFXIVUtil.getHuntPosition(BotMain.INSTANCE.huntMap.get(huntInfo.mapPath), huntInfo.x, huntInfo.y, 1f, 1024), "jpg", os);
+                            ImageIO.write(FFXIVUtil.getHuntImage(BotMain.INSTANCE.huntMap.get(huntInfo.mapPath), huntInfo.x, huntInfo.y, 1f, 1024), "jpg", os);
                             InputStream is = new ByteArrayInputStream(os.toByteArray());
                             ExternalResource res = ExternalResource.create(is);
                             image = g.uploadImage(res);
@@ -198,6 +194,7 @@ public class EventFactory extends SimpleListenerHost {
                         }
 
                         MessageChain chain;
+
                         if (isFate) {
                             chain = new MessageChainBuilder().append("[" + huntInfo.dataCenter + "-" + huntInfo.region + "] " + huntInfo.rank + " " + huntInfo.name + " " + huntInfo.zone + " (" + String.format("%.1f", huntInfo.x) + ", " + String.format("%.1f", huntInfo.y) + ") " + (huntInfo.fateState)).append("\n").append(image != null ? image : new PlainText("不存在该地图文件 " + huntInfo.mapPath)).asMessageChain();
                         } else {
