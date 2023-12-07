@@ -22,6 +22,8 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -176,8 +178,12 @@ public class EventFactory extends SimpleListenerHost {
                     if (isHunt || isFate) {
                         if (!BotMain.INSTANCE.huntMap.containsKey(huntInfo.mapPath)) {
                             File f = new File(BotMain.INSTANCE.huntMapPath, huntInfo.mapPath + ".png");
-                            if (f.exists())
-                                BotMain.INSTANCE.huntMap.put(huntInfo.mapPath, ImageIO.read(f));
+                            if (f.exists()) {
+                                BufferedImage tempImg = ImageIO.read(f);
+                                BufferedImage result = new BufferedImage(tempImg.getWidth(), tempImg.getHeight(), BufferedImage.TYPE_INT_RGB);
+                                result.createGraphics().drawImage(tempImg, 0, 0, Color.WHITE, null);
+                                BotMain.INSTANCE.huntMap.put(huntInfo.mapPath, result);
+                            }
                         }
 
                         Image image = null;
