@@ -63,7 +63,7 @@ public abstract class Command {
     }
 
     public OwnerOnlyType getOwnerOnlyType() {
-        return ownerOnly ? OwnerOnlyType.NONE : ownerOnlyType;
+        return ownerOnly ? ownerOnlyType : OwnerOnlyType.NONE;
     }
 
     public void setOwnerOnlyType(OwnerOnlyType ownerOnlyType) {
