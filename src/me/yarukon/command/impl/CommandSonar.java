@@ -16,7 +16,7 @@ public class CommandSonar extends Command {
     public CommandSonar() {
         super("sonar", "群Sonar广播设置");
         this.setOwnerOnly(true);
-        this.setUsage(".sonar <region/rank/level/fate> <list/add/del|value> <FATE名称>");
+        this.setUsage(".sonar <region/server/rank/level/fate> <list/add/del|value> <服务器/FATE名称>");
     }
 
     @Override
@@ -46,6 +46,41 @@ public class CommandSonar extends Command {
                     } else {
                         this.sendUsage(group);
                     }
+                    break;
+
+                case "server":
+                    if (args.length >= 2) {
+                        if (args[1].equals("list")) {
+                            if (value.servers.getValues().size() == 0) break;
+                            group.sendMessage("服务器 (" + value.servers.getValues().size() + "): " + StringUtils.join(value.servers.getValues(), " / "));
+                            break;
+                        }
+
+                        if (args.length >= 3) {
+                            switch (args[1]) {
+                                case "add":
+                                    if (!BotMain.INSTANCE.isZoneExist(args[2])) {
+                                        group.sendMessage(args[2] + " 不是有效的服务器!");
+                                        break;
+                                    }
+
+                                    group.sendMessage("添加服务器白名单 " + args[2] + " " + (value.servers.addValue(args[2]) ? "成功" : "失败"));
+                                    BotMain.INSTANCE.saveConfig();
+                                    break;
+
+                                case "del":
+                                    if (!BotMain.INSTANCE.isZoneExist(args[2])) {
+                                        group.sendMessage(args[2] + " 不是有效的服务器!");
+                                        break;
+                                    }
+
+                                    group.sendMessage("移除服务器白名单 " + args[2] + " " + (value.servers.delValue(args[2]) ? "成功" : "失败"));
+                                    BotMain.INSTANCE.saveConfig();
+                            }
+                        } else
+                            this.sendUsage(group);
+                    } else
+                        this.sendUsage(group);
                     break;
 
                 case "rank":
@@ -98,7 +133,7 @@ public class CommandSonar extends Command {
                     if (args.length >= 2) {
                         if (args[1].equals("list")) {
                             if (value.fateFilter.getValues().size() == 0) break;
-                            group.sendMessage("白名单(" + value.fateFilter.getValues().size() + "): " + StringUtils.join(value.fateFilter.getValues(), " / "));
+                            group.sendMessage("FATE白名单 (" + value.fateFilter.getValues().size() + "): " + StringUtils.join(value.fateFilter.getValues(), " / "));
                             break;
                         }
 

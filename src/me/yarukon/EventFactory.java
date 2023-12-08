@@ -172,7 +172,7 @@ public class EventFactory extends SimpleListenerHost {
                     Group g = b.getGroup(v.getKey());
                     if (g == null) continue;
 
-                    boolean isHunt = v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().ranks.getValue(huntInfo.rank) && v.getValue().levels.getValue(String.valueOf(huntInfo.level));
+                    boolean isHunt = (v.getValue().regions.getValue(huntInfo.dataCenter) || v.getValue().servers.hasValue(huntInfo.region)) && v.getValue().ranks.getValue(huntInfo.rank) && v.getValue().levels.getValue(String.valueOf(huntInfo.level));
                     boolean isFate = huntInfo.rank.equals("FATE") && v.getValue().regions.getValue(huntInfo.dataCenter) && v.getValue().fateFilter.hasValue(huntInfo.name);
 
                     if (isHunt || isFate) {

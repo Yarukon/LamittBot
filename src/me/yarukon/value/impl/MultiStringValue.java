@@ -26,10 +26,16 @@ public class MultiStringValue extends ValueBase {
     }
 
     public boolean addValue(String value) {
+        if (hasValue(value))
+            return false;
+
         return values.add(value);
     }
 
     public boolean delValue(String value) {
+        if (!hasValue(value))
+            return false;
+
         return values.remove(value);
     }
 }
