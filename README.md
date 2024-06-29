@@ -1,1 +1,2 @@
-Spaghetti code, don't look
+- Spaghetti code, don't look
+- 机器人QQ已经死号了 不想再弄了
